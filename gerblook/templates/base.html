@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}GerbLook{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}" />
+    {% block extrahead %}{% endblock %}
+</head>
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="/"><b>{{ config.APP_NAME|default('GerbLook') }}</b></a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li{% if active == 'faq' %} class="active"{% endif %}><a href="/faq">FAQ</a></li>
+                        {% block extranav %}{% endblock %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="visible-desktop" style="margin-top:55px;"></div>
+    <div class="container-fluid">
+        {% block content %}{% endblock %}
+        <hr>
+        <footer>
+            <p class="muted">Sponsored by <a href="http://nicegear.co.nz/">nicegear.co.nz</a>. Rendered using <a href="http://gerbv.gpleda.org/">Gerbv</a> and <a href="http://www.imagemagick.org/">ImageMagick</a>.</p>
+        </footer>
+    </div>
+    <script src="{{ url_for('static', filename='jquery-1.8.3.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='jquery.ajaxfileupload.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.file-input.js') }}"></script>
+    <script src="{{ url_for('static', filename='base.js') }}"></script>
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(["trackPageView"]);
+      _paq.push(["enableLinkTracking"]);
+
+      (function() {
+        var u=(("https:" == document.location.protocol) ? "https" : "http") + "://stats.nice.net.nz/";
+        _paq.push(["setTrackerUrl", u+"piwik.php"]);
+        _paq.push(["setSiteId", "3"]);
+        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    {% block extrabody %}{% endblock %}
+</body>
+</html>
+

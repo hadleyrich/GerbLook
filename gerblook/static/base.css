@@ -1,0 +1,12 @@
+html, body {
+  font-family       : sans-serif;
+}
+.gerber-container {
+    position        : relative;
+    border          : 1px solid #ddd;
+}
+.gerber-container img {
+    position        : absolute;
+    top             : 0;
+    left            : 0;
+}

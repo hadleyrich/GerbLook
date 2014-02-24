@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% macro form_field(field) %}
+    {% if field.widget.input_type == 'hidden' %}
+    <div>{{ field(**kwargs) }}</div>
+    {% else %}
+    <div class="control-group{% if field.errors %} error{% endif %}">
+        {{ field.label(class="control-label") }}
+        <div class="controls">
+            {{ field(**kwargs) }}
+            <span class="help-inline">
+                {% for error in field.errors %}{{ error|e }}{% endfor %}
+            </span>
+        </div>
+    </div>
+    {% endif %}
+{% endmacro %}
+
+{% block extrabody %}
+{% endblock %}
+
+{% block content %}
+
+<p>GerbLook is an online <a href="https://en.wikipedia.org/wiki/Gerber_format">gerber file</a> viewer. Gerber files are used for manufacturing printed circuit boards (PCBs). GerbLook will render and display images of the various layers of your PCB which you can use to inspect what your fabricated board will look like.</p>
+
+{% if errors %}
+<div class="alert alert-block alert-error">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <ul class="unstyled">
+    {% for error in errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<form id="gerber-form" method="POST" enctype="multipart/form-data" class="form-horizontal">
+    {{ form.hidden_tag() }}
+    {{ form_field(form.gerbers, multiple=multiple) }}
+    {{ form_field(form.soldermask_color) }}
+    {{ form_field(form.silkscreen_color) }}
+    {{ form_field(form.copper_color) }}
+    <div class="control-group">
+        <label></label>
+        <div class="controls">
+            <input id="go" class="btn btn-primary" type="submit" value="Go!" />
+        </div>
+    </div>
+</form>
+
+<p>How do you use it? Upload a set of gerber files, can be either zipped, rarred or multiple separate gerber files. Select your soldermask, silkscreen and copper colors. Your gerber files are used to generate the images and then deleted.</p>
+
+<p>New! Now handles up to six copper layers.</p>
+
+<p>Current issues:</p>
+<ul>
+    <li>Does not handle panelised files correctly.</li>
+    <li>Some outline lines need to be removed.</li>
+    <li>Some images are rendered too large.</li>
+    <li>A couple of rendering issues with gerbv
+        <ul>
+            <li>Files generated from Eagle Cad sometimes have horizontal lines running through polygons</li>
+            <li>Some curved lines seem to be slightly offset</li>
+        </ul>
+    </li>
+    <li>May not recognise some gerber file names.</li>
+    <li>Your issue here...</li>
+</ul>
+
+<p>If you have an upload that didn't work or other issues or suggestions, feel free to email <a href="mailto:info@nice.net.nz">info@nice.net.nz</a>. Mention GerbLook in the subject and attach the files if you can.</p>
+
+{% endblock %}
+

@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block extrabody %}
+<script type="text/javascript">
+    {% if not details.rendered %}
+    function update_render_status() {
+        $.getJSON(location.href + '/state.json', function(data) {
+            if (data.activity) {
+                $('#activity').text(data.activity);
+            } else {
+                $('#activity').text('Queued');
+            }
+            if (data.progress) {
+                $('.bar').css('width', data.progress + '%');
+                if (data.progress == 100) {
+                    location.reload();
+                }
+            }
+            if (data.progress != 0) {
+                window.setTimeout(update_render_status, 1000);
+            }
+        });
+    }
+    $(function() {
+        update_render_status();
+    });
+    {% endif %}
+</script>
+{% endblock %}
+
+{% block content %}
+{% if details.rendered %}
+<div class="tabbable tabs-left">
+    <ul class="nav nav-tabs" id="layers">
+        <li class="active"><a href="#front" data-toggle="tab">PCB Front</a></li>
+        <li><a href="#back" data-toggle="tab">PCB Back</a></li>
+        {% if 'plated_drills.png' in images %}
+        <li><a href="#plated-drills" data-toggle="tab">Plated Drills</a></li>
+        {% endif %}
+        {% if 'nonplated_drills.png' in images %}
+        <li><a href="#nonplated-drills" data-toggle="tab">Non-Plated Drills</a></li>
+        {% endif %}
+        <li><a href="#top-copper" data-toggle="tab">Top Copper</a></li>
+        {% if 'inner_1.png' in images %}
+        <li><a href="#inner-1" data-toggle="tab">Inner Layer 1</a></li>
+        {% endif %}
+        {% if 'inner_2.png' in images %}
+        <li><a href="#inner-2" data-toggle="tab">Inner Layer 2</a></li>
+        {% endif %}
+        {% if 'inner_3.png' in images %}
+        <li><a href="#inner-3" data-toggle="tab">Inner Layer 3</a></li>
+        {% endif %}
+        {% if 'inner_4.png' in images %}
+        <li><a href="#inner-4" data-toggle="tab">Inner Layer 4</a></li>
+        {% endif %}
+        <li><a href="#bottom-copper" data-toggle="tab">Bottom Copper</a></li>
+        <li><a href="#top-soldermask" data-toggle="tab">Top Soldermask</a></li>
+        <li><a href="#bottom-soldermask" data-toggle="tab">Bottom Soldermask</a></li>
+        {% if 'top_silkscreen.png' in images %}
+        <li><a href="#top-silkscreen" data-toggle="tab">Top Silkscreen</a></li>
+        {% endif %}
+        {% if 'bottom_silkscreen.png' in images %}
+        <li><a href="#bottom-silkscreen" data-toggle="tab">Bottom Silkscreen</a></li>
+        {% endif %}
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="front">
+            {% if noalpha %}
+            <img src="/image/{{ uid }}/top-noalpha.png" />
+            {% else %}
+            <img src="/image/{{ uid }}/top.png" />
+            {% endif %}
+        </div>
+        <div class="tab-pane" id="back">
+            {% if noalpha %}
+            <img src="/image/{{ uid }}/bottom-noalpha.png" />
+            {% else %}
+            <img src="/image/{{ uid }}/bottom.png" />
+            {% endif %}
+        </div>
+        {% if 'plated_drills.png' in images %}
+        <div class="tab-pane" id="plated-drills">
+            <img src="/image/{{ uid }}/plated_drills.png" />
+        </div>
+        {% endif %}
+        {% if 'nonplated_drills.png' in images %}
+        <div class="tab-pane" id="nonplated-drills">
+            <img src="/image/{{ uid }}/nonplated_drills.png" />
+        </div>
+        {% endif %}
+        <div class="tab-pane" id="top-copper">
+            <img src="/image/{{ uid }}/top_copper.png" />
+        </div>
+        {% if 'inner_1.png' in images %}
+        <div class="tab-pane" id="inner-1">
+            <img src="/image/{{ uid }}/inner_1.png" />
+        </div>
+        {% endif %}
+        {% if 'inner_2.png' in images %}
+        <div class="tab-pane" id="inner-2">
+            <img src="/image/{{ uid }}/inner_2.png" />
+        </div>
+        {% endif %}
+        {% if 'inner_3.png' in images %}
+        <div class="tab-pane" id="inner-3">
+            <img src="/image/{{ uid }}/inner_3.png" />
+        </div>
+        {% endif %}
+        {% if 'inner_4.png' in images %}
+        <div class="tab-pane" id="inner-4">
+            <img src="/image/{{ uid }}/inner_4.png" />
+        </div>
+        {% endif %}
+        <div class="tab-pane" id="bottom-copper">
+            <img src="/image/{{ uid }}/bottom_copper.png" />
+        </div>
+        <div class="tab-pane" id="top-soldermask">
+            <img src="/image/{{ uid }}/top_soldermask.png" />
+        </div>
+        <div class="tab-pane" id="bottom-soldermask">
+            <img src="/image/{{ uid }}/bottom_soldermask.png" />
+        </div>
+        {% if 'top_silkscreen.png' in images %}
+        <div class="tab-pane" id="top-silkscreen">
+            <img src="/image/{{ uid }}/top_silkscreen.png" />
+        </div>
+        {% endif %}
+        {% if 'bottom_silkscreen.png' in images %}
+        <div class="tab-pane" id="bottom-silkscreen">
+            <img src="/image/{{ uid }}/bottom_silkscreen.png" />
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% else %}
+<div class="hero-unit">
+    <h1>Rendering...</h1>
+    <p>Won't be a moment, your images are being rendered, please stand by.</p>
+    <div class="progress progress-striped active">
+        <div class="bar" style="width: 0%;"></div>
+    </div>
+    <p id="activity" style="text-align: center;">&nbsp;</p>
+</div>
+{% endif %}
+{% endblock %}
+
