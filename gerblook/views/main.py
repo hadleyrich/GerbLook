@@ -114,17 +114,18 @@ def index():
             x, y = gerber_size(os.path.join(gerberdir, layers['outline'][0]), units='mm')
             area = x * y
             DPI = '100'
-            if area < 20000:
+            if area == 0:
+                DPI = '100'
+            elif area < 20000:
                 DPI = '200'
-            if area < 10000:
+            elif area < 10000:
                 DPI = '300'
-            if area < 5000:
+            elif area < 5000:
                 DPI = '400'
-            if area < 1000:
+            elif area < 1000:
                 DPI = '500'
-            if area < 500:
+            elif area < 500:
                 DPI = '600'
-
 
             details = {
                 'gerber_size': (x, y),
