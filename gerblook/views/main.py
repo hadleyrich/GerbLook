@@ -113,9 +113,9 @@ def index():
             # Calculate size of gerber and output images
             x, y = gerber_size(os.path.join(gerberdir, layers['outline'][0]), units='mm')
             area = x * y
-            DPI = '100'
+            DPI = '200'
             if area == 0:
-                DPI = '100'
+                DPI = '200'
             elif area < 20000:
                 DPI = '200'
             elif area < 10000:
