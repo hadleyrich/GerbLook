@@ -10,7 +10,8 @@ from rarfile import RarFile
 from werkzeug import secure_filename
 from flask import Blueprint, request, render_template, \
     url_for, send_file, redirect, abort, current_app as app, g
-from flask.ext.wtf import Form, FileField, SelectField
+from flask.ext.wtf import Form
+from wtforms import FileField, SelectField
 
 from gerblook.utils import *
 from gerblook.models import *
@@ -116,16 +117,19 @@ def index():
             DPI = '200'
             if area == 0:
                 DPI = '200'
-            elif area < 20000:
-                DPI = '200'
-            elif area < 10000:
-                DPI = '300'
-            elif area < 5000:
-                DPI = '400'
-            elif area < 1000:
-                DPI = '500'
             elif area < 500:
                 DPI = '600'
+            elif area < 1000:
+                DPI = '500'
+            elif area < 5000:
+                DPI = '400'
+            elif area < 10000:
+                DPI = '300'
+            elif area < 20000:
+                DPI = '200'
+
+            print 'Calculated area: %s' % area
+            print 'Set DPI: %s' % DPI
 
             details = {
                 'gerber_size': (x, y),
