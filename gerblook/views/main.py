@@ -27,7 +27,6 @@ class UploadForm(Form):
     copper_color = SelectField('Copper Color')
 
 @mod.route('/', methods=['GET', 'POST'])
-@login_required
 def index():
     errors = []
 
