@@ -11,9 +11,22 @@ from gerblook.utils import *
 
 manager = Manager(create_app)
 
+@manager.command
+def initdb():
+    """Creates all database tables"""
+    print 'Database: %s' % db.engine.url
+    db.create_all()
+    print 'All tables created'
+
+@manager.command
+def dropdb():
+    """Drops all database tables"""
+    print 'Database: %s' % db.engine.url
+    db.drop_all()
+    print 'All tables dropped'
+
 @manager.shell
 def make_shell_context():
-    app = manager.app()
     readline.parse_and_bind("tab: complete")
     data = globals()
     data.update(locals())
