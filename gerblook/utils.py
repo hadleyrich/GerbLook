@@ -8,6 +8,26 @@ from flask.ext.login import LoginManager
 db = SQLAlchemy()
 login_manager = LoginManager()
 
+def localtime(dt, tz=None):
+    """
+    Returns the time with tzinfo tz even if the datetime
+    passed (dt) is a primitive type.
+    """
+    try:
+        dt = pytz.utc.localize(dt)
+        if tz:
+            return dt.astimezone(tz)
+        else:
+            return dt.astimezone(app.tz)
+    except Exception, e:
+        return dt
+
+def strftime(dt, format):
+    try:
+        return dt.strftime(str(format))
+    except:
+        return dt
+
 def call(command='', args=[]):
     if command:
         args = command.split(' ')

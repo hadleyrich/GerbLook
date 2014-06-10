@@ -1,5 +1,6 @@
 import os
 import sys
+import pytz
 import redis
 from flask import Flask, request, g
 from flask.ext.login import current_user
@@ -42,6 +43,13 @@ def create_app():
         except OSError:
             sys.stderr.write('Unable to create DATA_DIR\n')
             sys.exit(2)
+
+    app.tz = pytz.utc
+    if 'TIMEZONE' in app.config:
+        app.tz = pytz.timezone(app.config['TIMEZONE'])
+
+    app.jinja_env.filters['strftime'] = strftime
+    app.jinja_env.filters['localtime'] = localtime
 
     db.init_app(app)
     @app.before_first_request
