@@ -1,2 +1,4 @@
 *.pyc
+devel.cfg
+production.cfg
 
