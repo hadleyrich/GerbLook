@@ -29,6 +29,7 @@ jQuery.fn.serializeObject = function() {
 
 $(function() {
     tab_history();
+    $('input[type=file]').bootstrapFileInput();
 /*    $('#zipfile').ajaxfileupload({
         action: '/',
         validate_extensions: false,

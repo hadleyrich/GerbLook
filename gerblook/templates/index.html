@@ -20,15 +20,15 @@
 </div>
 {% endif %}
 
-<form id="gerber-form" method="POST" enctype="multipart/form-data" class="form-horizontal">
+<form id="gerber-form" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
     {{ form.hidden_tag() }}
-    {{ form_field(form.gerbers, multiple=multiple) }}
-    {{ form_field(form.soldermask_color) }}
-    {{ form_field(form.silkscreen_color) }}
-    {{ form_field(form.copper_color) }}
-    <div class="control-group">
-        <label></label>
-        <div class="controls">
+    {{ form_field(form.gerbers, class="form-control", multiple=multiple) }}
+    {{ form_field(form.soldermask_color, class="form-control span") }}
+    {{ form_field(form.silkscreen_color, class="form-control") }}
+    {{ form_field(form.copper_color, class="form-control") }}
+    <div class="form-group">
+        <label class="col-sm-5"></label>
+        <div class="col-sm-5">
             <input id="go" class="btn btn-primary" type="submit" value="Go!" />
         </div>
     </div>

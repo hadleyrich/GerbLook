@@ -10,3 +10,11 @@ html, body {
     top             : 0;
     left            : 0;
 }
+#login-form {
+    max-width       : 350px;
+    margin          : 0 auto;
+}
+#gerber-form {
+    max-width       : 700px;
+}
+
