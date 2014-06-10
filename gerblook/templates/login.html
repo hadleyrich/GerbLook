@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% from "macros.html" import form_field %}
+
+{% block content %}
+<form id="gerber-form" method="POST" class="form-horizontal">
+    {{ form.hidden_tag() }}
+    {{ form_field(form.username) }}
+    {{ form_field(form.password) }}
+    <div class="control-group">
+        <label></label>
+        <div class="controls">
+            <input id="login" class="btn btn-primary" type="submit" value="Login" />
+        </div>
+    </div>
+</form>
+
+{% endblock %}
+

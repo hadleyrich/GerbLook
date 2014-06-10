@@ -1,18 +1,13 @@
-#TODO
-# Database
-# Pretty template
-# AJAX Upload
-
 import os
 import sys
-
 import redis
 from flask import Flask, request, g
+from flask.ext.login import current_user
 
+from utils import *
 from models import *
 
 SECRET_KEY = 'FIXME PLEASE!'
-DEBUG = True
 DATA_DIR = '/tmp/gerblook/'
 #IMAGE_SIZE = '500x500'
 SOLDERMASK_COLORS = {
@@ -31,11 +26,15 @@ COPPER_COLORS = {
     'Silver': '#a0a0a0ff',
     'Gold': '#e3bd91ff',
 }
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(__name__)
     app.config.from_envvar('GERBLOOK_SETTINGS', silent=True)
     app.r = redis.StrictRedis()
+
+    login_manager.setup_app(app)
+    login_manager.login_view = 'meta.login'
 
     if not os.path.isdir(app.config['DATA_DIR']):
         try:
@@ -50,6 +49,8 @@ def create_app():
         db.create_all()
 
     from gerblook.views.main import mod
+    app.register_blueprint(mod)
+    from gerblook.views.meta import mod
     app.register_blueprint(mod)
     return app
 

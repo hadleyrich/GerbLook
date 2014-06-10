@@ -2,8 +2,11 @@ import subprocess
 from datetime import datetime, timedelta
 
 from flask import json, jsonify, make_response, g, current_app as app
+from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.login import LoginManager
 
-from gerblook.models import *
+db = SQLAlchemy()
+login_manager = LoginManager()
 
 def call(command='', args=[]):
     if command:

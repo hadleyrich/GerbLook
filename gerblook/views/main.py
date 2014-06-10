@@ -12,6 +12,7 @@ from flask import Blueprint, request, render_template, \
     url_for, send_file, redirect, abort, current_app as app, g
 from flask.ext.wtf import Form
 from wtforms import FileField, SelectField
+from flask.ext.login import login_user, logout_user, login_required, current_user
 
 from gerblook.utils import *
 from gerblook.models import *
@@ -26,6 +27,7 @@ class UploadForm(Form):
     copper_color = SelectField('Copper Color')
 
 @mod.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
     errors = []
 
