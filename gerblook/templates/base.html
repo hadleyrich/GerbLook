@@ -7,6 +7,13 @@
     <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}" />
+    <style type="text/css">
+        @media (min-width: 980px) {
+            body {
+                padding-top     : 65px;
+            }
+        }
+    </style>
     {% block extrahead %}{% endblock %}
 </head>
 <body>
@@ -28,7 +35,48 @@
             </div>
         </div>
     </div>
-    <div class="visible-desktop" style="margin-top:55px;"></div>
+    <div class="row-fluid">
+        {% with messages = get_flashed_messages(category_filter=["error"]) %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-block alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% with messages = get_flashed_messages(category_filter=["warning"]) %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-block alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% with messages = get_flashed_messages(category_filter=["success"]) %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-block alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% with messages = get_flashed_messages(category_filter=["info"]) %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-block alert-info">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
     <div class="container-fluid">
         {% block content %}{% endblock %}
         <hr>
