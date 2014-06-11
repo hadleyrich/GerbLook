@@ -2,13 +2,13 @@
     {% if field.widget.input_type == 'hidden' %}
     <div>{{ field(**kwargs) }}</div>
     {% else %}
-    <div class="form-group{% if field.errors %} error{% endif %}">
+    <div class="form-group{% if field.errors %} has-error{% endif %}">
         {{ field.label(class="control-label col-md-2 col-md-offset-1") }}
         <div class="col-md-2">
             {% set css_class = 'form-control ' + kwargs.pop('class', '') %}
             {{ field(class=css_class, **kwargs) }}
         </div>
-        <span class="help-inline">
+        <span class="help-block">
             {% for error in field.errors %}{{ error|e }}{% endfor %}
         </span>
     </div>
