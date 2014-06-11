@@ -37,7 +37,7 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Account Details</a></li>
+                            <li><a href="{{ url_for('user.projects', username=current_user.username) }}">Projects</a></li>
                         </ul>
                     </li>
                     <li><a href="/logout"><i class="glyphicon glyphicon-log-out"></i> Log out</a></li>

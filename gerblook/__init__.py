@@ -70,6 +70,8 @@ def create_app():
 
     from gerblook.views.main import mod
     app.register_blueprint(mod)
+    from gerblook.views.user import mod
+    app.register_blueprint(mod)
     from gerblook.views.meta import mod
     app.register_blueprint(mod)
     return app
