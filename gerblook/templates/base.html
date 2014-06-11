@@ -33,7 +33,7 @@
                     {% if current_user.is_authenticated() %}
                     <li class="dropdown">
                         <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                            <i class="glyphicon glyphicon-user"></i> {{ current_user.name or current_user.email }}
+                            <i class="glyphicon glyphicon-user"></i> {{ current_user.username }}
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">

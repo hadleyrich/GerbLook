@@ -1,6 +1,8 @@
 import subprocess
 from datetime import datetime, timedelta
-
+from email.mime.text import MIMEText
+from email.header import Header
+from email.utils import formatdate, make_msgid, parseaddr
 from flask import json, jsonify, make_response, g, current_app as app
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
@@ -72,4 +74,30 @@ def adjustrgb(rgbcolor, percent):
     """
     percent = 1 + (float(percent) / 100)
     return tuple(int(x * percent) for x in rgbcolor)
+
+def send_email(msg_to, msg_subject, msg_body, msg_from=None,
+                smtp_server='localhost', envelope_from=None,
+                headers={}):
+
+    if not msg_from:
+        msg_from = app.config['EMAIL_FROM']
+
+    if not envelope_from:
+        envelope_from = parseaddr(msg_from)[1]
+
+    msg = MIMEText(msg_body)
+
+    msg['Subject'] = Header(msg_subject)
+    msg['From'] = msg_from
+    msg['To'] = msg_to
+    msg['Date'] = formatdate()
+    msg['Message-ID'] = make_msgid()
+    msg['Errors-To'] = envelope_from
+
+    if request:
+        msg['X-Submission-IP'] = request.remote_addr
+
+    s = smtplib.SMTP(smtp_server)
+    s.sendmail(envelope_from, msg_to, msg.as_string())
+    s.close()
 

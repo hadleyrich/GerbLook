@@ -16,11 +16,10 @@ class User(db.Model):
     id = db.Column(db.Integer(), primary_key=True, nullable=False)
     created = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
     updated = db.Column(db.DateTime(), onupdate=datetime.utcnow)
-    name = db.Column(db.String(100))
-    email = db.Column(db.String(200), nullable=False)
+    username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(200), nullable=False, unique=True)
     enabled = db.Column(db.Boolean(), default=True, nullable=False)
-    activated = db.Column(db.Boolean(), default=False, nullable=False)
 
     projects = db.relationship('Project', backref='user')
 
@@ -58,9 +57,8 @@ class Project(db.Model):
     created = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
     updated = db.Column(db.DateTime(), onupdate=datetime.utcnow)
     name = db.Column(db.String(100))
-    slug = db.Column(db.String(50), unique=True)
     public = db.Column(db.Boolean(), default=True, nullable=False)
 
     user_id = db.Column(db.Integer(),
-        db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'), nullable=False)
+        db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'))
 
