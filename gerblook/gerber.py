@@ -1,11 +1,13 @@
 import os
 import re
 
+from flask import current_app as app
+
 def guess_layers(filenames, gerberdir):
     layers = {}
     for filename in filenames:
         layer_result = guess_layer(filename, gerberdir)
-        print 'Guessed', layer_result, 'for', filename
+        app.logger.debug('Guessed %s for %s' % (layer_result, filename))
         if layer_result:
             if layer_result in layers:
                 layers[layer_result].append(filename)
@@ -19,7 +21,6 @@ def guess_layers(filenames, gerberdir):
     return layers
 
 def guess_layer(path, gerberdir):
-    print 'Check to gpi dri tool files' #FIXME
     """Try and guess the type of gerber file from the given filename"""
 
     filename = path.lower()

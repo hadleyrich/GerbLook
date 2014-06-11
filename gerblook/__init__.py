@@ -2,6 +2,9 @@ import os
 import sys
 import pytz
 import redis
+import logging
+from logging import Formatter
+from logging.handlers import RotatingFileHandler
 from flask import Flask, request, g
 from flask.ext.login import current_user
 
@@ -32,6 +35,15 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(__name__)
     app.config.from_envvar('GERBLOOK_SETTINGS', silent=True)
+
+    log_file = app.config.get('LOG_FILE', None)
+    if log_file:
+        handler = RotatingFileHandler(log_file, maxBytes=10000, backupCount=99)
+        handler.setFormatter(Formatter('%(asctime)s %(levelname)s: %(message)s '
+            '[in %(pathname)s:%(lineno)d]'))
+        handler.setLevel(logging.INFO)
+        app.logger.addHandler(handler)
+
     app.r = redis.StrictRedis()
 
     login_manager.setup_app(app)

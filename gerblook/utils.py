@@ -31,8 +31,12 @@ def strftime(dt, format):
 def call(command='', args=[]):
     if command:
         args = command.split(' ')
-    #print 'Calling: ', ' '.join(args)
-    return subprocess.check_output(args, stderr=subprocess.STDOUT)
+    app.logger.debug('Calling: %s' % ' '.join(args))
+    try:
+        result = subprocess.check_output(args, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError, e:
+        app.logger.exception('Call failed: %s' % ' '.join(args))
+    return result
 
 def base36encode(number):
     assert number >= 0, 'Positive integer required'

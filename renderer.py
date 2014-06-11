@@ -18,9 +18,10 @@ color_copper = '#a0a0a011'
 
 app = create_app()
 with app.test_request_context():
+    app.logger.info('Renderer process starting')
     while True:
         uid = app.r.brpoplpush('gerblook/renderqueue', 'gerblook/processqueue')
-        print 'Processing job: %s' % uid
+        app.logger.info('Processing job: %s' % uid)
         basedir = os.path.join(app.config['DATA_DIR'], uid)
         gerberdir = os.path.join(basedir, 'gerbers')
         imagedir = os.path.join(basedir, 'images')
@@ -50,11 +51,7 @@ with app.test_request_context():
                 args += ['-f', '#ffffffff', os.path.join(gerberdir, layers[layer][0])]
             except KeyError:
                 pass
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
+        result = call(args=args)
 
         args = ['convert', background, '-fill', 'red', '-floodfill', '+0,+0', 'white', 'png32:%s' % background]
         result = call(args=args)
@@ -106,21 +103,13 @@ with app.test_request_context():
                     args += ['-f', '#ffffffff', os.path.join(gerberdir, layers[layer][0])]
                 except KeyError:
                     pass
-            try:
-                result = call(args=args)
-            except subprocess.CalledProcessError, e:
-                print 'Call failed: %s' % ' '.join(args)
-                print e
+            result = call(args=args)
 
             args = ['convert', outfile, '-transparent', 'white']
             if app.config.get('IMAGE_SIZE', None):
                 args += ['-resize', app.config['IMAGE_SIZE']]
             args += ['png32:%s' % outfile]
-            try:
-                result = call(args=args)
-            except subprocess.CalledProcessError, e:
-                print 'Call failed: %s' % ' '.join(args)
-                print e
+            result = call(args=args)
 
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 25)
 
@@ -139,21 +128,13 @@ with app.test_request_context():
                     args += ['-f', '#ffffffff', os.path.join(gerberdir, layers[layer][0])]
                 except KeyError:
                     pass
-            try:
-                result = call(args=args)
-            except subprocess.CalledProcessError, e:
-                print 'Call failed: %s' % ' '.join(args)
-                print e
+            result = call(args=args)
 
             args = ['convert', outfile, '-transparent', 'white']
             if app.config.get('IMAGE_SIZE', None):
                 args += ['-resize', app.config['IMAGE_SIZE']]
             args += ['png32:%s' % outfile]
-            try:
-                result = call(args=args)
-            except subprocess.CalledProcessError, e:
-                print 'Call failed: %s' % ' '.join(args)
-                print e
+            result = call(args=args)
 
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 30)
 
@@ -177,21 +158,13 @@ with app.test_request_context():
                         args += ['-f', '#ffffffff', os.path.join(gerberdir, layers[layer][0])]
                     except KeyError:
                         pass
-                try:
-                    result = call(args=args)
-                except subprocess.CalledProcessError, e:
-                    print 'Call failed: %s' % ' '.join(args)
-                    print e
+                result = call(args=args)
 
                 args = ['convert', outfile, '-transparent', 'white', '-transparent', 'red']
                 if app.config.get('IMAGE_SIZE', None):
                     args += ['-resize', app.config['IMAGE_SIZE']]
                 args += ['png32:%s' % outfile]
-                try:
-                    result = call(args=args)
-                except subprocess.CalledProcessError, e:
-                    print 'Call failed: %s' % ' '.join(args)
-                    print e
+                result = call(args=args)
 
 
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 35)
@@ -211,21 +184,13 @@ with app.test_request_context():
                     args += ['-f', '#ffffffff', os.path.join(gerberdir, layers[layer][0])]
                 except KeyError:
                     pass
-            try:
-                result = call(args=args)
-            except subprocess.CalledProcessError, e:
-                print 'Call failed: %s' % ' '.join(args)
-                print e
+            result = call(args=args)
 
             args = ['convert', outfile, '-transparent', 'white']
             if app.config.get('IMAGE_SIZE', None):
                 args += ['-resize', app.config['IMAGE_SIZE']]
             args += ['png32:%s' % outfile]
-            try:
-                result = call(args=args)
-            except subprocess.CalledProcessError, e:
-                print 'Call failed: %s' % ' '.join(args)
-                print e
+            result = call(args=args)
 
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 40)
 
@@ -244,21 +209,13 @@ with app.test_request_context():
                     args += ['-f', '#ffffffff', os.path.join(gerberdir, layers[layer][0])]
                 except KeyError:
                     pass
-            try:
-                result = call(args=args)
-            except subprocess.CalledProcessError, e:
-                print 'Call failed: %s' % ' '.join(args)
-                print e
+            result = call(args=args)
 
             args = ['convert', outfile, '-transparent', 'white', '-flop']
             if app.config.get('IMAGE_SIZE', None):
                 args += ['-resize', app.config['IMAGE_SIZE']]
             args += ['png32:%s' % outfile]
-            try:
-                result = call(args=args)
-            except subprocess.CalledProcessError, e:
-                print 'Call failed: %s' % ' '.join(args)
-                print e
+            result = call(args=args)
 
         # Render required layers
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 45)
@@ -280,21 +237,13 @@ with app.test_request_context():
                 args += ['-f', '#ffffffff', os.path.join(gerberdir, layers[layer][0])]
             except KeyError:
                 pass
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
+        result = call(args=args)
 
         args = ['convert', outfile, '-transparent', 'white', '-transparent', 'red']
         if app.config.get('IMAGE_SIZE', None):
             args += ['-resize', app.config['IMAGE_SIZE']]
         args += ['png32:%s' % outfile]
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
+        result = call(args=args)
 
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 50)
         app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Generating top soldermask layer')
@@ -312,11 +261,7 @@ with app.test_request_context():
                 args += ['-f', '#ffffffff', os.path.join(gerberdir, layers[layer][0])]
             except KeyError:
                 pass
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
+        result = call(args=args)
 
         args = ['convert', outfile, '-fill', 'red', '-floodfill', '+0,+0', 'white', 'png32:%s' % outfile]
         result = call(args=args)
@@ -334,11 +279,7 @@ with app.test_request_context():
         if app.config.get('IMAGE_SIZE', None):
             args += ['-resize', app.config['IMAGE_SIZE']]
         args += ['png32:%s' % outfile]
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
+        result = call(args=args)
 
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 55)
         app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Generating bottom copper layer')
@@ -359,21 +300,13 @@ with app.test_request_context():
                 args += ['-f', '#ffffffff', os.path.join(gerberdir, layers[layer][0])]
             except KeyError:
                 pass
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
+        result = call(args=args)
 
         args = ['convert', outfile, '-transparent', 'white', '-transparent', 'red', '-flop']
         if app.config.get('IMAGE_SIZE', None):
             args += ['-resize', app.config['IMAGE_SIZE']]
         args += ['png32:%s' % outfile]
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
+        result = call(args=args)
 
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 60)
         app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Generating bottom soldermask layer')
@@ -391,11 +324,7 @@ with app.test_request_context():
                 args += ['-f', '#ffffffff', os.path.join(gerberdir, layers[layer][0])]
             except KeyError:
                 pass
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
+        result = call(args=args)
 
         args = ['convert', outfile, '-fill', 'red', '-floodfill', '+0,+0', 'white', 'png32:%s' % outfile]
         result = call(args=args)
@@ -413,11 +342,7 @@ with app.test_request_context():
         if app.config.get('IMAGE_SIZE', None):
             args += ['-resize', app.config['IMAGE_SIZE']]
         args += ['png32:%s' % outfile]
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
+        result = call(args=args)
 
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 65)
         app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Generating composite images')
@@ -428,12 +353,7 @@ with app.test_request_context():
         if 'top_silkscreen' in layers:
             args.append(os.path.join(imagedir, 'top_silkscreen.png'))
         args += ['-background', 'none', '-flatten', 'png32:%s' % outfile]
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
-            print result
+        result = call(args=args)
 
         outfile = os.path.join(imagedir, 'top-noalpha.png')
         args = ['convert']
@@ -442,12 +362,7 @@ with app.test_request_context():
         if 'top_silkscreen' in layers:
             args.append(os.path.join(imagedir, 'top_silkscreen.png'))
         args += ['-flatten', 'png32:%s' % outfile]
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
-            print result
+        result = call(args=args)
 
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 75)
         outfile = os.path.join(imagedir, 'bottom.png')
@@ -457,12 +372,7 @@ with app.test_request_context():
         if 'bottom_silkscreen' in layers:
             args.append(os.path.join(imagedir, 'bottom_silkscreen.png'))
         args += ['-background', 'none', '-flatten', 'png32:%s' % outfile]
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
-            print result
+        result = call(args=args)
 
         outfile = os.path.join(imagedir, 'bottom-noalpha.png')
         args = ['convert']
@@ -471,12 +381,7 @@ with app.test_request_context():
         if 'bottom_silkscreen' in layers:
             args.append(os.path.join(imagedir, 'bottom_silkscreen.png'))
         args += ['-flatten', 'png32:%s' % outfile]
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
-            print result
+        result = call(args=args)
 
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 85)
         # Flip bottom images back the right way
@@ -485,34 +390,19 @@ with app.test_request_context():
             outfile = os.path.join(imagedir, '%s.png' % output)
             args = ['convert', outfile, '-fill', 'black', '-opaque', details['color_silkscreen'], '-flop']
             args += ['png32:%s' % outfile]
-            try:
-                result = call(args=args)
-            except subprocess.CalledProcessError, e:
-                print 'Call failed: %s' % ' '.join(args)
-                print e
-                print result
+            result = call(args=args)
 
         output = 'bottom_soldermask'
         outfile = os.path.join(imagedir, '%s.png' % output)
         args = ['convert', outfile, '-flop']
         args += ['png32:%s' % outfile]
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
-            print result
+        result = call(args=args)
 
         output = 'bottom_copper'
         outfile = os.path.join(imagedir, '%s.png' % output)
         args = ['convert', outfile, '-flop']
         args += ['png32:%s' % outfile]
-        try:
-            result = call(args=args)
-        except subprocess.CalledProcessError, e:
-            print 'Call failed: %s' % ' '.join(args)
-            print e
-            print result
+        result = call(args=args)
 
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 95)
         if 'top_silkscreen' in layers:
@@ -520,12 +410,7 @@ with app.test_request_context():
             outfile = os.path.join(imagedir, '%s.png' % output)
             args = ['convert', outfile, '-fill', 'black', '-opaque', details['color_silkscreen']]
             args += ['png32:%s' % outfile]
-            try:
-                result = call(args=args)
-            except subprocess.CalledProcessError, e:
-                print 'Call failed: %s' % ' '.join(args)
-                print e
-                print result
+            result = call(args=args)
 
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 100)
         app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Done!')

@@ -129,9 +129,6 @@ def index():
             elif area < 20000:
                 DPI = '200'
 
-            print 'Calculated area: %s' % area
-            print 'Set DPI: %s' % DPI
-
             details = {
                 'gerber_size': (x, y),
                 'dpi': DPI,
