@@ -88,6 +88,14 @@ def index():
             shutil.rmtree(tempdir)
         else:
             uid = str(shortuuid.uuid())
+
+            if current_user.is_authenticated():
+                p = Project()
+                p.id = uid
+                p.user = current_user
+                db.session.add(p)
+                db.session.commit()
+
             basedir = os.path.join(app.config['DATA_DIR'], uid)
             shutil.move(tempdir, basedir)
             gerberdir = os.path.join(basedir, 'gerbers')
