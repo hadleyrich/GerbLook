@@ -20,6 +20,7 @@ class User(db.Model):
     email = db.Column(db.String(200), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     enabled = db.Column(db.Boolean(), default=True, nullable=False)
+    activated = db.Column(db.Boolean(), default=False, nullable=False)
 
     projects = db.relationship('Project', backref='user')
 

@@ -7,10 +7,8 @@
 
 {% block content %}
 
-<p>GerbLook is an online <a href="https://en.wikipedia.org/wiki/Gerber_format">gerber file</a> viewer. Gerber files are used for manufacturing printed circuit boards (PCBs). GerbLook will render and display images of the various layers of your PCB which you can use to inspect what your fabricated board will look like.</p>
-
 {% if errors %}
-<div class="alert alert-block alert-error">
+<div class="col-md-10 col-md-offset-1 alert alert-danger alert-dismissable">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <ul class="unstyled">
     {% for error in errors %}
@@ -20,15 +18,17 @@
 </div>
 {% endif %}
 
+<p>GerbLook is an online <a href="https://en.wikipedia.org/wiki/Gerber_format">gerber file</a> viewer. Gerber files are used for manufacturing printed circuit boards (PCBs). GerbLook will render and display images of the various layers of your PCB which you can use to inspect what your fabricated board will look like.</p>
+
 <form id="gerber-form" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
     {{ form.hidden_tag() }}
-    {{ form_field(form.gerbers, class="form-control", multiple=multiple) }}
-    {{ form_field(form.soldermask_color, class="form-control span") }}
-    {{ form_field(form.silkscreen_color, class="form-control") }}
-    {{ form_field(form.copper_color, class="form-control") }}
+    {{ form_field(form.gerbers, multiple=multiple) }}
+    {{ form_field(form.soldermask_color) }}
+    {{ form_field(form.silkscreen_color) }}
+    {{ form_field(form.copper_color) }}
     <div class="form-group">
-        <label class="col-sm-5"></label>
-        <div class="col-sm-5">
+        <label class="col-sm-3"></label>
+        <div class="col-sm-2">
             <input id="go" class="btn btn-primary" type="submit" value="Go!" />
         </div>
     </div>

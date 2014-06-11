@@ -3,19 +3,15 @@
 {% from "macros.html" import form_field %}
 
 {% block content %}
-<form id="login-form" method="POST" role="form">
+<form id="login-form" method="POST" class="form-horizontal" role="form">
     {{ form.hidden_tag() }}
+    {{ form_field(form.email) }}
+    {{ form_field(form.password) }}
     <div class="form-group">
-        {{ form.username.label(class="control-label") }}
-        {{ form.username(class="form-control", placeholder="Email") }}
-    </div>
-    <div class="form-group">
-        {{ form.password.label(class="control-label") }}
-        {{ form.password(class="form-control", placeholder="Password") }}
-    </div>
-    <div class="form-group">
-        <label></label>
-        <input id="login" class="btn btn-primary" type="submit" value="Login" />
+        <label class="col-sm-3"></label>
+        <div class="col-sm-2">
+            <input class="btn btn-primary" type="submit" value="Log in" />
+        </div>
     </div>
 </form>
 

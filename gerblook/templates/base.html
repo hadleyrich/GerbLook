@@ -4,7 +4,6 @@
     <title>{% block title %}GerbLook{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}" />
     <style type="text/css">
         body {
@@ -41,9 +40,10 @@
                             <li><a href="#">Account Details</a></li>
                         </ul>
                     </li>
-                    <li><a href="/logout"><i class="glyphicon glyphicon-lock"></i> Logout</a></li>
+                    <li><a href="/logout"><i class="glyphicon glyphicon-log-out"></i> Log out</a></li>
                     {% else %}
-                    <li><a href="/login"><i class="glyphicon glyphicon-lock"></i> Login</a></li>
+                    <li><a href="/signup"><i class="glyphicon glyphicon-user"></i> Sign up</a></li>
+                    <li><a href="/login"><i class="glyphicon glyphicon-log-in"></i> Log in</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -56,7 +56,7 @@
             {% for message in messages %}
             <div class="col-md-10 col-md-offset-1 alert alert-danger alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ message }}
+                {{ message|safe }}
             </div>
             {% endfor %}
             {% endif %}
@@ -66,7 +66,7 @@
             {% for message in messages %}
             <div class="col-md-10 col-md-offset-1 alert alert-warning alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ message }}
+                {{ message|safe }}
             </div>
             {% endfor %}
             {% endif %}
@@ -76,7 +76,7 @@
             {% for message in messages %}
             <div class="col-md-10 col-md-offset-1 alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ message }}
+                {{ message|safe }}
             </div>
             {% endfor %}
             {% endif %}
@@ -86,7 +86,7 @@
             {% for message in messages %}
             <div class="col-md-10 col-md-offset-1 alert alert-info alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ message }}
+                {{ message|safe }}
             </div>
             {% endfor %}
             {% endif %}

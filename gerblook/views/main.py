@@ -8,7 +8,7 @@ import magic
 from zipfile import ZipFile
 from rarfile import RarFile
 from werkzeug import secure_filename
-from flask import Blueprint, request, render_template, \
+from flask import Blueprint, request, render_template, flash, \
     url_for, send_file, redirect, abort, current_app as app, g
 from flask.ext.wtf import Form
 from wtforms import FileField, SelectField
@@ -66,8 +66,10 @@ def index():
                 gerbers.append(safe_filename)
             else:
                 shutil.rmtree(tempdir)
-                errors.append('That was an unexpected file type. Please upload a zip, rar or selection of gerber files.')
-                return render_template('index.html', errors=errors, form=form)
+                error = 'That was an unexpected file type. Please upload a zip, rar or selection of gerber files.'
+                error += ' Check the <a class="alert-link" href="/faq">FAQ</a> for the supported file names.'
+                flash(error, 'error')
+                return render_template('index.html', form=form)
 
         layers = guess_layers(gerbers, gerberdir)
                 
@@ -77,14 +79,10 @@ def index():
             errors.append("Couldn't find top copper layer.")
         if 'top_soldermask' not in layers.keys():
             errors.append("Couldn't find top soldermask layer.")
-        #if 'top_silkscreen' not in layers.keys():
-        #    errors.append("Couldn't find top silkscreen layer.")
         if 'bottom_copper' not in layers.keys():
             errors.append("Couldn't find bottom copper layer.")
         if 'bottom_soldermask' not in layers.keys():
             errors.append("Couldn't find bottom soldermask layer.")
-        #if 'bottom_silkscreen' not in layers.keys():
-        #    errors.append("Couldn't find bottom silkscreen layer.")
 
         if errors:
             shutil.rmtree(tempdir)

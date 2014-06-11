@@ -11,17 +11,44 @@ from gerblook.models import *
 mod = Blueprint('meta', __name__)
 
 class LoginForm(Form):
-    username = TextField('Email', [validators.DataRequired()])
+    email = TextField('Email', [validators.DataRequired()])
     password = PasswordField('Password', [validators.DataRequired()])
     submit_button = SubmitField('Login')
 
-@mod.route('/login/', methods=('GET', 'POST'))
+class SignupForm(Form):
+    email = TextField('Email', [validators.DataRequired()])
+    password = PasswordField('Password', [validators.DataRequired()])
+    password_confirm = PasswordField('Confirm Password', [validators.DataRequired()])
+    name = TextField('Name', [validators.Optional()])
+    submit_button = SubmitField('Login')
+
+@mod.route('/signup', methods=('GET', 'POST'))
+def signup():
+    form = SignupForm()
+
+    if form.validate_on_submit():
+        user = User.query.filter(User.email==form.email.data).first()
+        if user:
+            if user.check_password(form.password.data):
+                login_user(user, remember=True)
+                flash("Logged you in.", 'success')
+                if 'next' in request.args:
+                    return redirect(request.args['next'])
+                else:
+                    return redirect('/')
+            else:
+                flash("Sorry, we couldn't find your email and password combination.", category='warning')
+        else:
+            flash("Sorry, we couldn't find your email and password combination.", category='warning')
+
+    return render_template('signup.html', form=form)
+
+@mod.route('/login', methods=('GET', 'POST'))
 def login():
     form = LoginForm()
 
-    data = {}
     if form.validate_on_submit():
-        user = User.query.filter(User.email==form.username.data).first()
+        user = User.query.filter(User.email==form.email.data).first()
         if user:
             if user.check_password(form.password.data):
                 login_user(user, remember=True)
@@ -35,9 +62,9 @@ def login():
         else:
             flash("Sorry, we couldn't find your username and password combination.", category='warning')
 
-    return render_template('login.html', form=form, **data)
+    return render_template('login.html', form=form)
 
-@mod.route('/logout/')
+@mod.route('/logout')
 def logout():
     logout_user()
     return redirect('/')
