@@ -21,7 +21,7 @@ class User(db.Model):
     email = db.Column(db.String(200), nullable=False, unique=True)
     enabled = db.Column(db.Boolean(), default=True, nullable=False)
 
-    projects = db.relationship('Project', backref='user')
+    projects = db.relationship('Project', order_by=db.desc('projects.created'), backref='user')
 
     def __str__(self):
         return self.name or self.email
