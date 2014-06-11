@@ -7,10 +7,8 @@
     <link href="{{ url_for('static', filename='bootstrap/css/bootstrap-responsive.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}" />
     <style type="text/css">
-        @media (min-width: 980px) {
-            body {
-                padding-top     : 65px;
-            }
+        body {
+            padding-top     : 65px;
         }
     </style>
     {% block extrahead %}{% endblock %}
@@ -32,52 +30,68 @@
                     <li{% if active == 'faq' %} class="active"{% endif %}><a href="/faq">FAQ</a></li>
                     {% block extranav %}{% endblock %}
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_authenticated() %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                            <i class="glyphicon glyphicon-user"></i> {{ current_user.name or current_user.email }}
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Account Details</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/logout"><i class="glyphicon glyphicon-lock"></i> Logout</a></li>
+                    {% else %}
+                    <li><a href="/login"><i class="glyphicon glyphicon-lock"></i> Login</a></li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
     </div>
-    <div class="row">
-        {% with messages = get_flashed_messages(category_filter=["error"]) %}
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-block alert-danger alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{ message }}
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-        {% with messages = get_flashed_messages(category_filter=["warning"]) %}
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-block alert-warning alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{ message }}
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-        {% with messages = get_flashed_messages(category_filter=["success"]) %}
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-block alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{ message }}
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-        {% with messages = get_flashed_messages(category_filter=["info"]) %}
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-block alert-info alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            {{ message }}
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-    </div>
     <div class="container-fluid">
+        <div class="row">
+            {% with messages = get_flashed_messages(category_filter=["error"]) %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="col-md-10 col-md-offset-1 alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {% with messages = get_flashed_messages(category_filter=["warning"]) %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="col-md-10 col-md-offset-1 alert alert-warning alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {% with messages = get_flashed_messages(category_filter=["success"]) %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="col-md-10 col-md-offset-1 alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            {% with messages = get_flashed_messages(category_filter=["info"]) %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="col-md-10 col-md-offset-1 alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
         {% block content %}{% endblock %}
         <hr>
         <footer>
