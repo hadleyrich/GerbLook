@@ -1,7 +1,10 @@
 import os
 import re
+import tempfile
 
 from flask import current_app as app
+
+from gerblook.utils import *
 
 def guess_layers(filenames, gerberdir):
     layers = {}
@@ -98,6 +101,24 @@ def guess_layer(path, gerberdir):
         return 'top_silkscreen'
     if 'top' in filename and 'paste' in filename:
         return 'top_paste'
+
+def approx_gerber_size(filename):
+
+    outfile = tempfile.mkstemp()[1]
+    args = ['gerbv', '-x', 'png', '-D', '1000', '-o', outfile, '-b', '#ffffff']
+    args += ['-f', '#000000ff', filename]
+    result = call(args=args)
+
+    args = ['convert', outfile, '-trim', outfile]
+    result = call(args=args)
+
+    args = ['identify', '-format', '%w,%h', outfile]
+    result = call(args=args)
+    w, h = result.split(',')
+
+    os.unlink(outfile)
+
+    return (int(w) * 0.0254, int(h) * 0.0254)
 
 def gerber_size(filename, units=None):
     """
