@@ -40,10 +40,10 @@
                             <li><a href="{{ url_for('user.projects', username=current_user.username) }}">Projects</a></li>
                         </ul>
                     </li>
-                    <li><a href="/logout"><i class="glyphicon glyphicon-log-out"></i> Log out</a></li>
+                    <li><a href="/logout"><i class="glyphicon glyphicon-log-out"></i> Sign out</a></li>
                     {% else %}
                     <li><a href="/signup"><i class="glyphicon glyphicon-user"></i> Sign up</a></li>
-                    <li><a href="/login"><i class="glyphicon glyphicon-log-in"></i> Log in</a></li>
+                    <li><a href="/login"><i class="glyphicon glyphicon-log-in"></i> Sign in</a></li>
                     {% endif %}
                 </ul>
             </div>
