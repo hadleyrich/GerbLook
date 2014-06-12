@@ -58,6 +58,15 @@ class Project(db.Model):
     updated = db.Column(db.DateTime(), onupdate=datetime.utcnow)
     name = db.Column(db.String(100))
     public = db.Column(db.Boolean(), default=True, nullable=False)
+    expires = db.Column(db.DateTime())
+    rendered = db.Column(db.Boolean(), default=False, nullable=False)
+    store_gerbers = db.Column(db.Boolean(), default=True, nullable=False)
+    width = db.Column(db.Float())
+    height = db.Column(db.Float())
+    layer_info = db.Column(db.Text())
+    color_backgorund = db.Column(db.String(20))
+    color_copper = db.Column(db.String(20))
+    color_silkscreen = db.Column(db.String(20))
 
     user_id = db.Column(db.Integer(),
         db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'))
