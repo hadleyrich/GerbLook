@@ -137,13 +137,15 @@
     </div>
 </div>
 {% else %}
-<div class="hero-unit">
-    <h1>Rendering...</h1>
-    <p>Won't be a moment, your images are being rendered, please stand by.</p>
-    <div class="progress progress-striped active">
-        <div class="progress-bar" style="width: 0%;" role="progressbar"></div>
+<div class="container-fluid">
+    <div class="jumbotron">
+        <h1>Rendering...</h1>
+        <p>Won't be a moment, your images are being rendered, please stand by.</p>
+        <div class="progress progress-striped active">
+            <div class="progress-bar" style="width: 0%;" role="progressbar"></div>
+        </div>
+            <p id="activity" style="text-align: center;">&nbsp;</p>
     </div>
-    <p id="activity" style="text-align: center;">&nbsp;</p>
 </div>
 {% endif %}
 {% endblock %}
