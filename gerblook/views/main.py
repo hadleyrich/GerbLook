@@ -89,13 +89,6 @@ def index():
         else:
             uid = str(shortuuid.uuid())
 
-            if current_user.is_authenticated():
-                p = Project()
-                p.id = uid
-                p.user = current_user
-                db.session.add(p)
-                db.session.commit()
-
             basedir = os.path.join(app.config['DATA_DIR'], uid)
             shutil.move(tempdir, basedir)
             gerberdir = os.path.join(basedir, 'gerbers')
@@ -119,8 +112,8 @@ def index():
 
 
             # Calculate size of gerber and output images
-            x, y = gerber_size(os.path.join(gerberdir, layers['outline'][0]), units='mm')
-            area = x * y
+            w, h = gerber_size(os.path.join(gerberdir, layers['outline'][0]), units='mm')
+            area = w * h
             DPI = '200'
             if area == 0:
                 DPI = '200'
@@ -136,7 +129,7 @@ def index():
                 DPI = '200'
 
             details = {
-                'gerber_size': (x, y),
+                'gerber_size': (w, h),
                 'dpi': DPI,
                 'color_silkscreen': color_silkscreen,
                 'color_background': color_background,
@@ -146,6 +139,19 @@ def index():
             }
             detail_file = os.path.join(basedir, 'details.json')
             json.dump(details, open(detail_file, 'w'))
+
+            project = Project()
+            project.id = uid
+            project.layer_info = json.dumps(layers)
+            project.width = w
+            project.height = h
+            project.color_silkscreen = color_silkscreen
+            project.color_background = color_background
+            project.color_copper = color_copper
+            if current_user.is_authenticated():
+                project.user = current_user
+            db.session.add(project)
+            db.session.commit()
 
             app.r.lpush('gerblook/renderqueue', uid)
             return redirect(url_for('.pcb', uid=uid))
