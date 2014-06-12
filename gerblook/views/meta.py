@@ -15,7 +15,7 @@ class LoginForm(Form):
     password = PasswordField('Password', [validators.DataRequired()])
 
 class SignupForm(Form):
-    username = TextField('Username', [validators.DataRequired(), validators.Length(min=4, max=50),
+    username = TextField('Username', [validators.DataRequired(), validators.Length(min=3, max=50),
         validators.Regexp(r'^[A-Za-z0-9-]+$',
         message='Usernames may only contain alphanumeric characters or dashes.')])
     email = TextField('Email', [validators.DataRequired(), validators.Email()])
