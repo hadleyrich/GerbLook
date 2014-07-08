@@ -20,6 +20,7 @@ class User(db.Model):
     password = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(200), nullable=False, unique=True)
     enabled = db.Column(db.Boolean(), default=True, nullable=False)
+    verified = db.Column(db.Boolean(), default=False, nullable=False)
 
     projects = db.relationship('Project', order_by=db.desc('projects.created'), backref='user')
 
