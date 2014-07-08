@@ -3,3 +3,4 @@ devel.cfg
 production.cfg
 logs/
 venv/
+data/
