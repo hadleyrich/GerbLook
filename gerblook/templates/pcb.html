@@ -63,7 +63,7 @@
             {% if 'bottom_silkscreen.png' in images %}
             <li><a href="#bottom-silkscreen" data-toggle="tab">Bottom Silkscreen</a></li>
             {% endif %}
-            {% if project %}
+            {% if current_user.is_authenticated() and project %}
             <li><a href="#details" data-toggle="tab">Details</a></li>
             {% endif %}
         </ul>
