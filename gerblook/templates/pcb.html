@@ -136,7 +136,7 @@
                 <img src="/image/{{ uid }}/bottom_silkscreen.png" />
             </div>
             {% endif %}
-            {% if project %}
+            {% if current_user.is_authenticated() and project %}
             <div class="tab-pane" id="details">
                 <ul>
                     <li>Dimensions: {{ project.width|round(1) }}mm x {{ project.height|round(1) }}mm (approx)</li>
