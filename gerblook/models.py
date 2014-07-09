@@ -1,10 +1,24 @@
+import json
 from datetime import datetime
-
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import json, jsonify, make_response, g, current_app as app
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy.types import TypeDecorator, Text
 
 from utils import *
+
+class JSONEncodedDict(TypeDecorator):
+    impl = Text
+
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            value = json.dumps(value)
+        return value
+
+    def process_result_value(self, value, dialect):
+        if value is not None:
+            value = json.loads(value)
+        return value
 
 @login_manager.user_loader
 def load_user(id):
@@ -64,7 +78,7 @@ class Project(db.Model):
     store_gerbers = db.Column(db.Boolean(), default=True, nullable=False)
     width = db.Column(db.Float())
     height = db.Column(db.Float())
-    layer_info = db.Column(db.Text())
+    layer_info = db.Column(JSONEncodedDict())
     color_backgorund = db.Column(db.String(20))
     color_copper = db.Column(db.String(20))
     color_silkscreen = db.Column(db.String(20))

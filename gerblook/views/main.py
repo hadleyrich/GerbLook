@@ -165,6 +165,8 @@ def pcb(uid):
     if not os.path.isdir(basedir):
         abort(404)
 
+    project = Project.query.get(uid)
+
     detail_file = os.path.join(basedir, 'details.json')
     try:
         details = json.load(open(detail_file))
@@ -178,7 +180,8 @@ def pcb(uid):
     if 'noalpha' in request.args:
         noalpha = True
 
-    return render_template('pcb.html', uid=uid, images=images, noalpha=noalpha, details=details)
+    return render_template('pcb.html', uid=uid, images=images, noalpha=noalpha,
+        details=details, project=project)
 
 @mod.route('/pcb/<uid>/state.json', methods=['GET'])
 def pcb_state(uid):

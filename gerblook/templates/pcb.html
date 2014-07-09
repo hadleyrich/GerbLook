@@ -63,6 +63,9 @@
             {% if 'bottom_silkscreen.png' in images %}
             <li><a href="#bottom-silkscreen" data-toggle="tab">Bottom Silkscreen</a></li>
             {% endif %}
+            {% if project %}
+            <li><a href="#details" data-toggle="tab">Details</a></li>
+            {% endif %}
         </ul>
     </div>
     <div class="col-md-10">
@@ -131,6 +134,28 @@
             {% if 'bottom_silkscreen.png' in images %}
             <div class="tab-pane" id="bottom-silkscreen">
                 <img src="/image/{{ uid }}/bottom_silkscreen.png" />
+            </div>
+            {% endif %}
+            {% if project %}
+            <div class="tab-pane" id="details">
+                <ul>
+                    <li>Dimensions: {{ project.width|round(1) }}mm x {{ project.height|round(1) }}mm (approx)</li>
+                    <li>
+                        Layer info:
+                        <ul>
+                            {% for layer in project.layer_info %}
+                            <li>
+                                {{ layer }}
+                                <ul>
+                                {% for filename in project.layer_info[layer] %}
+                                <li>{{ filename }}</li>
+                                {% endfor %}
+                                </ul>
+                            {% endfor %}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
             {% endif %}
         </div>
