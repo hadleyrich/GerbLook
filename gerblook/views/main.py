@@ -142,7 +142,7 @@ def index():
 
             project = Project()
             project.id = uid
-            project.layer_info = json.dumps(layers)
+            project.layer_info = layers
             project.width = w
             project.height = h
             project.color_silkscreen = color_silkscreen
