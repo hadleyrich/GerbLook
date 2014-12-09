@@ -38,7 +38,8 @@ def call(command='', args=[]):
         result = subprocess.check_output(args, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError, e:
         app.logger.exception('Call failed: %s' % ' '.join(args))
-    return result
+    else:
+        return result
 
 def base36encode(number):
     assert number >= 0, 'Positive integer required'

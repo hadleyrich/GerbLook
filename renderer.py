@@ -30,15 +30,16 @@ with app.test_request_context():
         layers = details['layers'] #FIXME
 
         # Render background images
-        app.r.set('gerblook/pcb/%s/render-progress' % uid, 10)
-        app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Generating background')
+        app.r.set('gerblook/pcb/%s/render-progress' % uid, 5)
+        app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Generating inital background')
 
+        initial_background = os.path.join(imagedir, 'background_initial.png')
         background = os.path.join(imagedir, 'background.png')
         top_background = os.path.join(imagedir, 'top_background.png')
         bottom_background = os.path.join(imagedir, 'bottom_background.png')
 
         args = ['gerbv', '-x', 'png', '-D', details['dpi'], '-B', '1', '-o',
-            background, '-b', '#ffffff']
+            initial_background, '-b', '#ffffff']
         if 'plated_drills' in layers:
             args += ['-f', '#0000ffff', os.path.join(gerberdir, layers['plated_drills'][0])]
         if 'nonplated_drills' in layers:
@@ -53,8 +54,11 @@ with app.test_request_context():
                 pass
         result = call(args=args)
 
-        args = ['convert', background, '-fill', 'red', '-floodfill', '+0,+0', 'white', 'png32:%s' % background]
+        args = ['convert', initial_background, '-fill', 'red', '-floodfill', '+0,+0', 'white', 'png32:%s' % background]
         result = call(args=args)
+
+        app.r.set('gerblook/pcb/%s/render-progress' % uid, 10)
+        app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Finding outline')
 
         p1 = subprocess.Popen(['convert', background, 'text:'], stdout=subprocess.PIPE)
         p2 = subprocess.Popen(['grep', 'white'], stdout=subprocess.PIPE, stdin=p1.stdout, stderr=open(os.devnull))
@@ -62,12 +66,15 @@ with app.test_request_context():
         p1.stdout.close()
         p2.stdout.close()
 
-        output = p3.communicate()[0]
+        output, err = p3.communicate()
         if not output:
             app.r.set('gerblook/pcb/%s/render-progress' % uid, 0)
             app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Failed to render the background')
             continue
         x, y = output.split(':')[0].split(',')
+
+        app.r.set('gerblook/pcb/%s/render-progress' % uid, 15)
+        app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Colouring background')
 
         args = ['convert', background, '-fill', details['color_background'], '-floodfill', '+%s+%s' % (x, y), 'white', 'png32:%s' % background]
         result = call(args=args)
