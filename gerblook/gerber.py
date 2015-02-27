@@ -34,6 +34,9 @@ def guess_layer(path, gerberdir):
     if 'mfgcode' in filename:
         return
 
+    if filename.endswith('-Vcut.gbr'):
+        return
+
     if 'inner1' in filename:
         return 'inner_1'
     if 'inner2' in filename:
