@@ -31,7 +31,7 @@ with app.test_request_context():
 
         # Render background images
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 5)
-        app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Generating inital background')
+        app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Generating initial background')
 
         initial_background = os.path.join(imagedir, 'background_initial.png')
         background = os.path.join(imagedir, 'background.png')
