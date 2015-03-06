@@ -20,7 +20,7 @@ def guess_layers(filenames, gerberdir):
         layers['nonplated_drills'].sort(key=lambda f: os.path.splitext(f)[1])
     if 'plated_drills' in layers:
         layers['plated_drills'].sort(key=lambda f: os.path.splitext(f)[1])
-        
+
     return layers
 
 def guess_layer(path, gerberdir):
@@ -123,130 +123,120 @@ def gerbv_gerber_size(filename):
     return (int(w) * 0.0254, int(h) * 0.0254)
 
 def gerber_size(filename):
+    board = full_gerber_size(filename)
+    return round(board['w'], 2), round(board['h'], 2)
+
+def full_gerber_size(filename):
     """
     Calculate size of supplied gerber file in mm,mm
 
     Adapted from PHP code by Jonathan Georgino for Dangerous Prototypes. Thanks!
     """
     board = {}
-    board['number_format'] = 'unknown'
-    board['coordinate_mode'] = 'unknown'
-    board['units'] = 'unknown'
+    board['number_format'] = None
+    board['coordinate_mode'] = None
+    board['units'] = None
 
-    numformat = 'L' # default
-    coordmode = 'A' # default
+    board['x_min'] = 999999999
+    board['y_min'] = 999999999
+    board['x_max'] = -999999999
+    board['y_max'] = -999999999
 
-    units = None
+    f = open(filename)
+    for line in f:
+        if line.startswith('%FS'):
+            if line[3:4] == 'L':
+                board['number_format'] = 'Leading zeros omitted'
+            elif line[3:4] == 'T':
+                board['number_format'] = 'Trailing zeros omitted'
+            else:
+                board['number_format'] = 'unknown'
 
-    min_x_pt = 999999999
-    min_y_pt = 999999999
-    max_x_pt = -999999999
-    max_y_pt = -999999999
+            if line[4:5] == 'A':
+                board['coordinate_mode'] = 'absolute'
+            elif line[4:5] == 'I':
+                board['coordinate_mode'] = 'incremental'
+            else:
+                board['coordinate_mode'] = 'unknown'
 
-    with open(filename, 'r') as f:
-        for line in f:
-            if line.startswith('%FS'):
-                numformat = line[3:4]
-                if numformat == 'L':
-                    board['number_format'] = 'Leading zeros omitted'
-                elif numformat == 'T':
-                    board['number_format'] = 'Trailing zeros omitted'
-                elif numformat == 'D':
-                    board['number_format'] = 'Explicit decimal point'
+            x_digs_before_decimal = int(line[6:7])
+            x_digs_after_decimal = int(line[7:8])
+            x_digs_total = x_digs_before_decimal + x_digs_after_decimal
+            y_digs_before_decimal = int(line[9:10])
+            y_digs_after_decimal = int(line[10:11])
+            y_digs_total = y_digs_before_decimal + y_digs_after_decimal
+        elif line.startswith('G70'): # Check for the Gcode for inches
+            board['units'] = "in"
+        elif line.startswith('G71'): # Check for the Gcode for mm
+            board['units'] = "mm"
+        elif line.startswith('%MOIN*%'): # Looking for units called out in the header, inches
+            board['units'] = "in"
+        elif line.startswith('%MOMM*%'): # Looking for units called out in the header, mm
+            board['units'] = "mm"
+        elif not line.startswith('%'): # It's not part of the header, track the coordinates for min and maximums
+            x = None
+            y = None
 
-                coordmode = line[4:5]
-                if coordmode == 'A':
-                    board['coordinate_mode'] = 'absolute'
-                elif coordmode == 'I':
-                    board['coordinate_mode'] = 'incremental'
-                else:
-                    board['coordinate_mode'] = 'unknown'
+            # This case catches lines with both x and y values
+            m = re.search(r'X(-?\d+)Y(-?\d+)', line, flags=re.IGNORECASE)
+            if m:
+                x = m.group(1)
+                y = m.group(2)
 
-                x_digs_before_decimal = int(line[6:7])
-                x_digs_after_decimal = int(line[7:8])
-                y_digs_before_decimal = int(line[9:10])
-                y_digs_after_decimal = int(line[10:11])
-            elif line.startswith('G70'): # Check for the Gcode for inches
-                units = "in"
-            elif line.startswith('G71'): # Check for the Gcode for mm
-                units = "mm"
-            elif line.startswith('%MOIN*%'): # Looking for units called out in the header, inches
-                units = "in"
-            elif line.startswith('%MOMM*%'): # Looking for units called out in the header, mm
-                units = "mm"
-            elif line.startswith('%*MOMM*%'): # Looking for units called out in the header, mm
-                print 'This happened: %*MOMM*%'
-                units = "mm"
+            # This case catches lines with only x coords (y is unchanged)
+            m = re.search(r'X(-?\d+)', line, flags=re.IGNORECASE)
+            if m:
+                x = m.group(1)
 
-            if not line.startswith('%'): # It's not part of the header, track the coordinates for min and maximums
-                # This case catches lines with both x and y values
-                m = re.search(r'X(-?\d+)Y(-?\d+)', line, flags=re.IGNORECASE)
-                if m:
-                    x = int(m.group(1))
-                    y = int(m.group(2))
-                    if numformat == 'T':  # This adjusts for the case of Trailing zeros omitted
-                        x = x * pow(10, (x_digs_before_decimal + x_digs_after_decimal) - len(m.group(1)))
-                        y = y * pow(10, (y_digs_before_decimal + y_digs_after_decimal) - len(m.group(2)))
+            # This case catches lines with only y coords (x is unchanged)
+            m = re.search(r'Y(-?\d+)', line, flags=re.IGNORECASE)
+            if m:
+                y = m.group(1)
 
-                    if x < min_x_pt:
-                        min_x_pt = x
-                    elif x > max_x_pt:
-                        max_x_pt = x
 
-                    if y < min_y_pt:
-                        min_y_pt = y
-                    elif y > max_y_pt:
-                        max_y_pt = y
+            if x is not None:
+                if board['number_format'] == 'Leading zeros omitted':
+                    x = x.zfill(x_digs_total)
+                elif board['number_format'] == 'Trailing zeros omitted':
+                    x = x + '0' * (x_digs_total - len(x))
+                x = int(x[0:x_digs_before_decimal]) + (float(x[x_digs_before_decimal:x_digs_total]) / pow(10, x_digs_after_decimal))
+                if x < board['x_min']:
+                    board['x_min'] = x
+                elif x > board['x_max']:
+                    board['x_max'] = x
+            if y is not None:
+                if board['number_format'] == 'Leading zeros omitted':
+                    y = y.zfill(x_digs_total)
+                elif board['number_format'] == 'Trailing zeros omitted':
+                    y = y + '0' * (y_digs_total - len(y))
+                y = int(y[0:y_digs_before_decimal]) + (float(y[y_digs_before_decimal:y_digs_total]) / pow(10, y_digs_after_decimal))
+                if y < board['y_min']:
+                    board['y_min'] = y
+                elif y > board['y_max']:
+                    board['y_max'] = y
 
-                # This case catches lines with only x coords (y is unchanged)
-                m = re.search(r'X(-?\d+)', line, flags=re.IGNORECASE)
-                if m:
-                    x = int(m.group(1))
-                    if numformat == 'T': # This adjusts for the case of Trailing zeros omitted
-                        x = x * pow(10, (x_digs_before_decimal + x_digs_after_decimal) - len(m.group(1)))
-
-                    if x < min_x_pt:
-                        min_x_pt = x
-                    elif x > max_x_pt:
-                        max_x_pt = x
-
-                # This case catches lines with only y coords (x is unchanged)
-                m = re.search(r'Y(-?\d+)', line, flags=re.IGNORECASE)
-                if m:
-                    y = int(m.group(1))
-                    if numformat == 'T': # This adjusts for the case of Trailing zeros omitted
-                        y = y * pow(10, (y_digs_before_decimal + y_digs_after_decimal) - len(m.group(1)))
-
-                    if y < min_y_pt:
-                        min_y_pt = y
-                    elif y > max_y_pt:
-                        max_y_pt = y
-
-    if min_x_pt == 999999999 and min_y_pt == 999999999:
+    if board['x_min'] == 999999999 and board['y_min'] == 999999999:
         raise ValueError("Couldn't find size")
-    if units is None:
+    if board['units'] is None:
         raise ValueError("Couldn't find units")
+    if board['number_format'] is None:
+        raise ValueError("Couldn't find number format")
 
-    board['x_min'] = min_x_pt / pow(10, x_digs_after_decimal)
-    board['x_max'] = max_x_pt / pow(10, x_digs_after_decimal)
-    board['y_min'] = min_y_pt / pow(10, y_digs_after_decimal)
-    board['y_max'] = max_y_pt / pow(10, y_digs_after_decimal)
-    board['w_raw'] = (max_x_pt - min_x_pt) / pow(10, x_digs_after_decimal)
-    board['h_raw'] = (max_y_pt - min_y_pt) / pow(10, y_digs_after_decimal)
-    board['units'] = units
+    board['w_raw'] = board['x_max'] - board['x_min']
+    board['h_raw'] = board['y_max'] - board['y_min']
 
-    board['w_mm'] = (max_x_pt - min_x_pt) / pow(10, x_digs_after_decimal)
-    board['h_mm'] = (max_y_pt - min_y_pt) / pow(10, y_digs_after_decimal)
-    if units == 'in': # Convert inches to mm
-        board['w_mm'] = board['w_mm'] * 25.4
-        board['h_mm'] = board['h_mm'] * 25.4
+    board['w'] = board['w_raw']
+    board['h'] = board['h_raw']
+    if board['units'] == 'in': # Convert inches to mm
+        board['w'] = board['w'] * 25.4
+        board['h'] = board['h'] * 25.4
 
-    return round(board['w_mm'], 2), round(board['h_mm'], 2)
+    return board
 
 def approx_gerber_size(filename, units=None):
     """
     Calculates the overall size of a gerber file.
-    
+
     Adapted from code by Matthew Beckler
     http://www.wayneandlayne.com/blog/2013/04/02/
     """
