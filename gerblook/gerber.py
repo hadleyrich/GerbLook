@@ -199,7 +199,11 @@ def full_gerber_size(filename):
                     x = x.zfill(x_digs_total)
                 elif board['number_format'] == 'Trailing zeros omitted':
                     x = x + '0' * (x_digs_total - len(x))
-                x = int(x[0:x_digs_before_decimal]) + (float(x[x_digs_before_decimal:x_digs_total]) / pow(10, x_digs_after_decimal))
+                val = int(x[0:x_digs_before_decimal])
+                if val < 0:
+                  x = val - (float(x[x_digs_before_decimal:x_digs_total]) / pow(10, x_digs_after_decimal))
+                else:
+                  x = val + (float(x[x_digs_before_decimal:x_digs_total]) / pow(10, x_digs_after_decimal))
                 if x < board['x_min']:
                     board['x_min'] = x
                 elif x > board['x_max']:
@@ -209,7 +213,11 @@ def full_gerber_size(filename):
                     y = y.zfill(x_digs_total)
                 elif board['number_format'] == 'Trailing zeros omitted':
                     y = y + '0' * (y_digs_total - len(y))
-                y = int(y[0:y_digs_before_decimal]) + (float(y[y_digs_before_decimal:y_digs_total]) / pow(10, y_digs_after_decimal))
+                val = int(y[0:y_digs_before_decimal])
+                if val < 0:
+                  y = val - (float(y[y_digs_before_decimal:y_digs_total]) / pow(10, y_digs_after_decimal))
+                else:
+                  y = val + (float(y[y_digs_before_decimal:y_digs_total]) / pow(10, y_digs_after_decimal))
                 if y < board['y_min']:
                     board['y_min'] = y
                 elif y > board['y_max']:
