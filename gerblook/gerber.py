@@ -213,7 +213,7 @@ def full_gerber_size(filename):
                     x = x + '0' * (x_digs_total - len(x))
                 multiplier = 1
                 if x.startswith('-'):
-                    x = x[1:-1]
+                    x = x[1:(len(x))]
                     multiplier = -1
                 val = int(x[0:x_digs_before_decimal])
                 if val < 0:
@@ -232,7 +232,7 @@ def full_gerber_size(filename):
                     y = y + '0' * (y_digs_total - len(y))
                 multiplier = 1
                 if y.startswith('-'):
-                    y = y[1:-1]
+                    y = y[1:len(y)]
                     multiplier = -1
                 val = int(y[0:y_digs_before_decimal])
                 if val < 0:
