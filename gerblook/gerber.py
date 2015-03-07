@@ -207,14 +207,14 @@ def full_gerber_size(filename):
 
 
             if x is not None:
-                if board['number_format'] == 'Leading zeros omitted':
-                    x = x.zfill(x_digs_total)
-                elif board['number_format'] == 'Trailing zeros omitted':
-                    x = x + '0' * (x_digs_total - len(x))
                 multiplier = 1
                 if x.startswith('-'):
                     x = x[1:(len(x))]
                     multiplier = -1
+                if board['number_format'] == 'Leading zeros omitted':
+                    x = x.zfill(x_digs_total)
+                elif board['number_format'] == 'Trailing zeros omitted':
+                    x = x + '0' * (x_digs_total - len(x))
                 val = int(x[0:x_digs_before_decimal])
                 if val < 0:
                   x = val - (float(x[x_digs_before_decimal:x_digs_total]) / pow(10, x_digs_after_decimal))
@@ -226,14 +226,14 @@ def full_gerber_size(filename):
                 elif x > board['x_max']:
                     board['x_max'] = x
             if y is not None:
-                if board['number_format'] == 'Leading zeros omitted':
-                    y = y.zfill(x_digs_total)
-                elif board['number_format'] == 'Trailing zeros omitted':
-                    y = y + '0' * (y_digs_total - len(y))
                 multiplier = 1
                 if y.startswith('-'):
                     y = y[1:len(y)]
                     multiplier = -1
+                if board['number_format'] == 'Leading zeros omitted':
+                    y = y.zfill(x_digs_total)
+                elif board['number_format'] == 'Trailing zeros omitted':
+                    y = y + '0' * (y_digs_total - len(y))
                 val = int(y[0:y_digs_before_decimal])
                 if val < 0:
                   y = val - (float(y[y_digs_before_decimal:y_digs_total]) / pow(10, y_digs_after_decimal))
