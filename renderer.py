@@ -145,7 +145,7 @@ with app.test_request_context():
 
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 30)
 
-        for i in range(1, 5):
+        for i in range(1, 7):
             if 'inner_%s' % i in layers:
                 app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Generating inner layer %s' % i)
                 output = 'inner_%s' % i

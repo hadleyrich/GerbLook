@@ -42,6 +42,12 @@ def guess_layer(path, gerberdir):
         return 'inner_3'
     if 'inner4' in filename:
         return 'inner_4'
+    if 'inner5' in filename:
+        return 'inner_5'
+    if 'inner6' in filename:
+        return 'inner_6'
+    if 'inner7' in filename:
+        return 'inner_7'
     if re.search(r'(vcut|vscore).*?\.gbr', filename):
         return 'vcut'
 
@@ -82,6 +88,12 @@ def guess_layer(path, gerberdir):
         return 'inner_3'
     if re.search(r'\.(g4|gl4)', filename):
         return 'inner_4'
+    if re.search(r'\.(g5|gl5)', filename):
+        return 'inner_5'
+    if re.search(r'\.(g6|gl6)', filename):
+        return 'inner_6'
+    if re.search(r'\.(g7|gl7)', filename):
+        return 'inner_7'
 
     if re.search(r'outline', filename):
         return 'outline'
