@@ -57,7 +57,7 @@ with app.test_request_context():
         args = ['convert', initial_background, '-fill', 'red', '-floodfill', '+0,+0', 'white', 'png32:%s' % background]
         result = call(args=args)
 
-        app.r.set('gerblook/pcb/%s/render-progress' % uid, 10)
+        app.r.set('gerblook/pcb/%s/render-progress' % uid, 5)
         app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Finding outline')
 
         p1 = subprocess.Popen(['convert', background, 'text:'], stdout=subprocess.PIPE)
@@ -73,7 +73,7 @@ with app.test_request_context():
             continue
         x, y = output.split(':')[0].split(',')
 
-        app.r.set('gerblook/pcb/%s/render-progress' % uid, 15)
+        app.r.set('gerblook/pcb/%s/render-progress' % uid, 10)
         app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Colouring background')
 
         args = ['convert', background, '-fill', details['color_background'], '-floodfill', '+%s+%s' % (x, y), 'white', 'png32:%s' % background]
@@ -92,7 +92,7 @@ with app.test_request_context():
         args += ['png32:%s' % bottom_background]
         result = call(args=args)
 
-        app.r.set('gerblook/pcb/%s/render-progress' % uid, 20)
+        app.r.set('gerblook/pcb/%s/render-progress' % uid, 15)
 
         # Render optional layers
         if 'plated_drills' in layers:
@@ -118,7 +118,7 @@ with app.test_request_context():
             args += ['png32:%s' % outfile]
             result = call(args=args)
 
-        app.r.set('gerblook/pcb/%s/render-progress' % uid, 25)
+        app.r.set('gerblook/pcb/%s/render-progress' % uid, 20)
 
         if 'nonplated_drills' in layers:
             app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Generating non-plated drills layer')
@@ -143,7 +143,7 @@ with app.test_request_context():
             args += ['png32:%s' % outfile]
             result = call(args=args)
 
-        app.r.set('gerblook/pcb/%s/render-progress' % uid, 30)
+        app.r.set('gerblook/pcb/%s/render-progress' % uid, 25)
 
         for i in range(1, 7):
             if 'inner_%s' % i in layers:
@@ -174,7 +174,7 @@ with app.test_request_context():
                 result = call(args=args)
 
 
-        app.r.set('gerblook/pcb/%s/render-progress' % uid, 35)
+        app.r.set('gerblook/pcb/%s/render-progress' % uid, 30)
 
         if 'top_silkscreen' in layers:
             app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Generating top silkscreen layer')
@@ -199,7 +199,7 @@ with app.test_request_context():
             args += ['png32:%s' % outfile]
             result = call(args=args)
 
-        app.r.set('gerblook/pcb/%s/render-progress' % uid, 40)
+        app.r.set('gerblook/pcb/%s/render-progress' % uid, 35)
 
         if 'bottom_silkscreen' in layers:
             app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Generating bottom silkscreen layer')
@@ -223,6 +223,31 @@ with app.test_request_context():
                 args += ['-resize', app.config['IMAGE_SIZE']]
             args += ['png32:%s' % outfile]
             result = call(args=args)
+
+        if 'vcuts' in layers:
+            app.r.set('gerblook/pcb/%s/render-activity' % uid, 'Generating vcuts layer')
+            output = 'vcuts'
+            color = app.config.get('VCUT_COLOR', '#ff0000ff')
+            outfile = os.path.join(imagedir, '%s.png' % output)
+
+            args = ['gerbv', '-x', 'png', '-D', details['dpi'], '-B', '1', '-o', outfile, '-b', '#ffffff']
+            args += ['-f', color, os.path.join(gerberdir, layers[output][0])]
+            for layer in layers.keys():
+                if layer == output:
+                    continue
+                try:
+                    args += ['-f', '#ffffffff', os.path.join(gerberdir, layers[layer][0])]
+                except KeyError:
+                    pass
+            result = call(args=args)
+
+            args = ['convert', outfile, '-transparent', 'white']
+            if app.config.get('IMAGE_SIZE', None):
+                args += ['-resize', app.config['IMAGE_SIZE']]
+            args += ['png32:%s' % outfile]
+            result = call(args=args)
+
+        app.r.set('gerblook/pcb/%s/render-progress' % uid, 40)
 
         # Render required layers
         app.r.set('gerblook/pcb/%s/render-progress' % uid, 45)

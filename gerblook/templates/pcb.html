@@ -72,6 +72,9 @@
             {% if 'bottom_silkscreen.png' in images %}
             <li><a href="#bottom-silkscreen" data-toggle="tab">Bottom Silkscreen</a></li>
             {% endif %}
+            {% if 'vcuts.png' in images %}
+            <li><a href="#vcuts" data-toggle="tab">V-Cuts</a></li>
+            {% endif %}
             {% if current_user.is_authenticated() and project %}
             <li><a href="#details" data-toggle="tab">Details</a></li>
             {% endif %}
@@ -158,6 +161,11 @@
             {% if 'bottom_silkscreen.png' in images %}
             <div class="tab-pane" id="bottom-silkscreen">
                 <img src="/image/{{ uid }}/bottom_silkscreen.png" />
+            </div>
+            {% endif %}
+            {% if 'vcuts.png' in images %}
+            <div class="tab-pane" id="vcuts">
+                <img src="/image/{{ uid }}/vcuts.png" />
             </div>
             {% endif %}
             {% if current_user.is_authenticated() and project %}

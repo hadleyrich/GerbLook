@@ -49,7 +49,7 @@ def guess_layer(path, gerberdir):
     if 'inner7' in filename:
         return 'inner_7'
     if re.search(r'(vcut|vscore).*?\.gbr', filename):
-        return 'vcut'
+        return 'vcuts'
 
     if re.search(r'\.(dri|drl|drd|txt)', filename):
         if filename.endswith('.dri'):
