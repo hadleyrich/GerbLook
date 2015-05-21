@@ -62,18 +62,18 @@ def guess_layer(path, gerberdir):
     if re.search(r'\.out|\.oln|\.gm1|\.gbr|\.gml|\.gko|\.gm16', filename):
         return 'outline'
 
-    if re.search(r'\.(gbl)', filename):
+    if re.search(r'\.(gbl|sol)', filename):
         return 'bottom_copper'
-    if re.search(r'\.(gbs)', filename):
+    if re.search(r'\.(gbs|sts)', filename):
         return 'bottom_soldermask'
     if re.search(r'\.(gbo)', filename):
         return 'bottom_silkscreen'
     if re.search(r'\.(gbp)', filename):
         return 'bottom_paste'
 
-    if re.search(r'\.(gtl)', filename):
+    if re.search(r'\.(gtl|cmp)', filename):
         return 'top_copper'
-    if re.search(r'\.(gts)', filename):
+    if re.search(r'\.(gts|stc)', filename):
         return 'top_soldermask'
     if re.search(r'\.(gto)', filename):
         return 'top_silkscreen'
