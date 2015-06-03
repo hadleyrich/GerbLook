@@ -34,19 +34,19 @@ def guess_layer(path, gerberdir):
     if 'mfgcode' in filename:
         return
 
-    if 'inner1' in filename:
+    if re.search('in.*?1', filename):
         return 'inner_1'
-    if 'inner2' in filename:
+    if re.search('in.*?2', filename):
         return 'inner_2'
-    if 'inner3' in filename:
+    if re.search('in.*?3', filename):
         return 'inner_3'
-    if 'inner4' in filename:
+    if re.search('in.*?4', filename):
         return 'inner_4'
-    if 'inner5' in filename:
+    if re.search('in.*?5', filename):
         return 'inner_5'
-    if 'inner6' in filename:
+    if re.search('in.*?6', filename):
         return 'inner_6'
-    if 'inner7' in filename:
+    if re.search('in.*?7', filename):
         return 'inner_7'
     if re.search(r'(vcut|vscore).*?\.gbr', filename):
         return 'vcuts'
