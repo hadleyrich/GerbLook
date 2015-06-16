@@ -34,20 +34,18 @@ def guess_layer(path, gerberdir):
     if 'mfgcode' in filename:
         return
 
-    if 'inner1' in filename:
-        return 'inner_1'
-    if 'inner2' in filename:
-        return 'inner_2'
-    if 'inner3' in filename:
-        return 'inner_3'
-    if 'inner4' in filename:
-        return 'inner_4'
-    if 'inner5' in filename:
-        return 'inner_5'
-    if 'inner6' in filename:
-        return 'inner_6'
-    if 'inner7' in filename:
-        return 'inner_7'
+    match = re.search(r'\.gl?([1-7])$', filename)
+    if match:
+        return 'inner_%s' % match.group(1)
+
+    match = re.search(r'inner([1-7])', filename)
+    if match:
+        return 'inner_%s' % match.group(1)
+
+    match = re.search(r'in([1-7])_cu', filename)
+    if match:
+        return 'inner_%s' % match.group(1)
+
     if re.search(r'(vcut|vscore).*?\.gbr', filename):
         return 'vcuts'
 
@@ -79,21 +77,6 @@ def guess_layer(path, gerberdir):
         return 'top_silkscreen'
     if re.search(r'\.(gtp)', filename):
         return 'top_paste'
-
-    if re.search(r'\.(g1|gl1)', filename):
-        return 'inner_1'
-    if re.search(r'\.(g2|gl2)', filename):
-        return 'inner_2'
-    if re.search(r'\.(g3|gl3)', filename):
-        return 'inner_3'
-    if re.search(r'\.(g4|gl4)', filename):
-        return 'inner_4'
-    if re.search(r'\.(g5|gl5)', filename):
-        return 'inner_5'
-    if re.search(r'\.(g6|gl6)', filename):
-        return 'inner_6'
-    if re.search(r'\.(g7|gl7)', filename):
-        return 'inner_7'
 
     if re.search(r'outline', filename):
         return 'outline'
