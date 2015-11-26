@@ -46,10 +46,14 @@ def guess_layer(path, gerberdir):
     if match:
         return 'inner_%s' % match.group(1)
 
+    match = re.search(r'internalplane([1-7])\.ger', filename)
+    if match:
+    	return 'inner_%s' % match.group(1)
+
     if re.search(r'(vcut|vscore).*?\.gbr', filename):
         return 'vcuts'
 
-    if re.search(r'\.(dri|drl|drd|txt)', filename):
+    if re.search(r'\.(dri|drl|drd|txt|drills\.xln)', filename):
         if filename.endswith('.dri'):
             data = open(os.path.join(gerberdir, path)).read(1024)
             if 'Drill Station Info File' in data:
@@ -57,25 +61,25 @@ def guess_layer(path, gerberdir):
         if 'npth' in filename:
             return 'nonplated_drills'
         return 'plated_drills'
-    if re.search(r'\.out|\.oln|\.gm1|\.gbr|\.gml|\.gko|\.gm16', filename):
+    if re.search(r'\.(out|oln|gm1|gbr|gml|gko|gm16|boardoutline\.ger)', filename):
         return 'outline'
 
-    if re.search(r'\.(gbl|sol)', filename):
+    if re.search(r'\.(gbl|sol|bottomlayer\.ger)', filename):
         return 'bottom_copper'
-    if re.search(r'\.(gbs|sts)', filename):
+    if re.search(r'\.(gbs|sts|bottomsoldermask\.ger)', filename):
         return 'bottom_soldermask'
-    if re.search(r'\.(gbo)', filename):
+    if re.search(r'\.(gbo|bottomsilkscreen\.ger)', filename):
         return 'bottom_silkscreen'
-    if re.search(r'\.(gbp)', filename):
+    if re.search(r'\.(gbp|bcream\.ger)', filename):
         return 'bottom_paste'
 
-    if re.search(r'\.(gtl|cmp)', filename):
+    if re.search(r'\.(gtl|cmp|toplayer\.ger)', filename):
         return 'top_copper'
-    if re.search(r'\.(gts|stc)', filename):
+    if re.search(r'\.(gts|stc|topsoldermask\.ger)', filename):
         return 'top_soldermask'
-    if re.search(r'\.(gto)', filename):
+    if re.search(r'\.(gto|topsilkscreen\.ger)', filename):
         return 'top_silkscreen'
-    if re.search(r'\.(gtp)', filename):
+    if re.search(r'\.(gtp|tcream\.ger)', filename):
         return 'top_paste'
 
     if re.search(r'outline', filename):
