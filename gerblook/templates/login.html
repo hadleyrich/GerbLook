@@ -4,15 +4,15 @@
 
 {% block content %}
 <form id="login-form" method="POST" class="form-horizontal" role="form">
-    {{ form.hidden_tag() }}
-    {{ form_field(form.user) }}
-    {{ form_field(form.password) }}
-    <div class="form-group">
-        <label class="col-sm-3"></label>
-        <div class="col-sm-2">
-            <input class="btn btn-primary" type="submit" value="Log in" />
-        </div>
+  {{ form.hidden_tag() }}
+  {{ form_field(form.user) }}
+  {{ form_field(form.password) }}
+  <div class="form-group">
+    <label class="col-sm-3"></label>
+    <div class="col-sm-2">
+      <input class="btn btn-primary" type="submit" value="Log in" />
     </div>
+  </div>
 </form>
 
 {% endblock %}

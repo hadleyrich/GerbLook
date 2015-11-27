@@ -2,24 +2,24 @@
 
 {% block content %}
 <table class="table table-hover">
-    <thead>
+  <thead>
 <!--
-        <tr>
-            <td>UUID</td>
-            <td>Created</td>
-            <td>Name</td>
-        </tr>
--->
-    </thead>
-    <tbody>
-    {% for project in current_user.projects %}
     <tr>
-        <td><a href="{{ url_for('main.pcb', uid=project.id) }}">{{ project.id }}</a></td>
-        <td>{{ project.created|strftime('%Y-%m-%d %H:%M') }} UTC</td>
-        <td><a href="{{ url_for('main.pcb', uid=project.id) }}">{{ project.name or '' }}</a></td>
+      <td>UUID</td>
+      <td>Created</td>
+      <td>Name</td>
     </tr>
-    {% endfor %}
-    </tbody>
+-->
+  </thead>
+  <tbody>
+  {% for project in current_user.projects %}
+  <tr>
+    <td><a href="{{ url_for('main.pcb', uid=project.id) }}">{{ project.id }}</a></td>
+    <td>{{ project.created|strftime('%Y-%m-%d %H:%M') }} UTC</td>
+    <td><a href="{{ url_for('main.pcb', uid=project.id) }}">{{ project.name or '' }}</a></td>
+  </tr>
+  {% endfor %}
+  </tbody>
 </table>
 {% endblock %}
 

@@ -1,122 +1,122 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}GerbLook{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}" />
-    <style type="text/css">
-        body {
-            padding-top     : 65px;
-        }
-    </style>
-    {% block extrahead %}{% endblock %}
+  <title>{% block title %}GerbLook{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}" />
+  <style type="text/css">
+    body {
+      padding-top   : 65px;
+    }
+  </style>
+  {% block extrahead %}{% endblock %}
 </head>
 <body>
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/"><b>{{ config.APP_NAME|default('GerbLook') }}</b></a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li{% if active == 'faq' %} class="active"{% endif %}><a href="/faq">FAQ</a></li>
-                    {% block extranav %}{% endblock %}
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    {% if current_user.is_authenticated() %}
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                            <i class="glyphicon glyphicon-user"></i> {{ current_user.username }}
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ url_for('user.projects', username=current_user.username) }}">Projects</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/logout"><i class="glyphicon glyphicon-log-out"></i> Sign out</a></li>
-                    {% else %}
-                    <li><a href="/signup"><i class="glyphicon glyphicon-user"></i> Sign up</a></li>
-                    <li><a href="/login"><i class="glyphicon glyphicon-log-in"></i> Sign in</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
+  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><b>{{ config.APP_NAME|default('GerbLook') }}</b></a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li{% if active == 'faq' %} class="active"{% endif %}><a href="/faq">FAQ</a></li>
+          {% block extranav %}{% endblock %}
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          {% if current_user.is_authenticated() %}
+          <li class="dropdown">
+            <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+              <i class="glyphicon glyphicon-user"></i> {{ current_user.username }}
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="{{ url_for('user.projects', username=current_user.username) }}">Projects</a></li>
+            </ul>
+          </li>
+          <li><a href="/logout"><i class="glyphicon glyphicon-log-out"></i> Sign out</a></li>
+          {% else %}
+          <li><a href="/signup"><i class="glyphicon glyphicon-user"></i> Sign up</a></li>
+          <li><a href="/login"><i class="glyphicon glyphicon-log-in"></i> Sign in</a></li>
+          {% endif %}
+        </ul>
+      </div>
     </div>
-    <div class="container-fluid">
-        <div class="row">
-            {% with messages = get_flashed_messages(category_filter=["error"]) %}
-            {% if messages %}
-            {% for message in messages %}
-            <div class="col-md-10 col-md-offset-1 alert alert-danger alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ message|safe }}
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-            {% with messages = get_flashed_messages(category_filter=["warning"]) %}
-            {% if messages %}
-            {% for message in messages %}
-            <div class="col-md-10 col-md-offset-1 alert alert-warning alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ message|safe }}
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-            {% with messages = get_flashed_messages(category_filter=["success"]) %}
-            {% if messages %}
-            {% for message in messages %}
-            <div class="col-md-10 col-md-offset-1 alert alert-success alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ message|safe }}
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-            {% with messages = get_flashed_messages(category_filter=["info"]) %}
-            {% if messages %}
-            {% for message in messages %}
-            <div class="col-md-10 col-md-offset-1 alert alert-info alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ message|safe }}
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-        </div>
-        {% block content %}{% endblock %}
-        <hr>
-        <footer>
-            <p class="muted">Sponsored by <a href="http://nicegear.co.nz/">nicegear.co.nz</a>. Rendered using <a href="http://gerbv.gpleda.org/">Gerbv</a> and <a href="http://www.imagemagick.org/">ImageMagick</a>.</p>
-        </footer>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      {% with messages = get_flashed_messages(category_filter=["error"]) %}
+      {% if messages %}
+      {% for message in messages %}
+      <div class="col-md-10 col-md-offset-1 alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message|safe }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+      {% with messages = get_flashed_messages(category_filter=["warning"]) %}
+      {% if messages %}
+      {% for message in messages %}
+      <div class="col-md-10 col-md-offset-1 alert alert-warning alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message|safe }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+      {% with messages = get_flashed_messages(category_filter=["success"]) %}
+      {% if messages %}
+      {% for message in messages %}
+      <div class="col-md-10 col-md-offset-1 alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message|safe }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+      {% with messages = get_flashed_messages(category_filter=["info"]) %}
+      {% if messages %}
+      {% for message in messages %}
+      <div class="col-md-10 col-md-offset-1 alert alert-info alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message|safe }}
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
     </div>
-    <script src="{{ url_for('static', filename='jquery-1.11.1.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='jquery.ajaxfileupload.js') }}"></script>
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='bootstrap.file-input.js') }}"></script>
-    <script src="{{ url_for('static', filename='base.js') }}"></script>
-    <script type="text/javascript">
-      var _paq = _paq || [];
-      _paq.push(["trackPageView"]);
-      _paq.push(["enableLinkTracking"]);
+    {% block content %}{% endblock %}
+    <hr>
+    <footer>
+      <p class="muted">Sponsored by <a href="http://nicegear.co.nz/">nicegear.co.nz</a>. Rendered using <a href="http://gerbv.gpleda.org/">Gerbv</a> and <a href="http://www.imagemagick.org/">ImageMagick</a>.</p>
+    </footer>
+  </div>
+  <script src="{{ url_for('static', filename='jquery-1.11.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='jquery.ajaxfileupload.js') }}"></script>
+  <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='bootstrap.file-input.js') }}"></script>
+  <script src="{{ url_for('static', filename='base.js') }}"></script>
+  <script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(["trackPageView"]);
+    _paq.push(["enableLinkTracking"]);
 
-      (function() {
-        var u=(("https:" == document.location.protocol) ? "https" : "http") + "://stats.nice.net.nz/";
-        _paq.push(["setTrackerUrl", u+"piwik.php"]);
-        _paq.push(["setSiteId", "3"]);
-        var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
-        g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
-      })();
-    </script>
-    {% block extrabody %}{% endblock %}
+    (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://stats.nice.net.nz/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", "3"]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+    g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+  {% block extrabody %}{% endblock %}
 </body>
 </html>
 

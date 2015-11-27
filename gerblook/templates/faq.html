@@ -5,70 +5,70 @@
 
 {% block content %}
 <dl>
-    <dt>What is a GerbLook?</dt>
-    <dd>GerbLook is an online viewer which renders images so you can "<strong>look</strong>" at "<strong>gerber</strong>" files. Gerber files are used for manufacturing printed circuit boards (PCBs).</dd>
-    <dt>Do you store uploaded gerber files?</dt>
-    <dd>Not unless you ask us to. Well, we do store them on disk temporarily while generating the images. Then unless you choose to save them, they are deleted from disk as soon as rendering is completed (or fails), within the same web request.</dd>
-    <dt>How are the images created?</dt>
-    <dd>Using <a href="http://gerbv.gpleda.org/">Gerbv</a> to render the gerber files to png images and then using some <a href="http://www.imagemagick.org/">ImageMagick</a> magic to merge and apply color to the images.</dd>
-    <dt>Why are the images a little bit jaggy?</dt>
-    <dd>Antialiasing is not turned which is what makes the nice soft edges you see on some images. This leads to slightly more accurate though not quite as pretty images.</dd>
-    <dt>Is the source code available?</dt>
-    <dd>Yes, it's on GitHub here; <a href="https://github.com/hadleyrich/GerbLook">https://github.com/hadleyrich/GerbLook</a>.</dd>
-    <dt>What gerber file names are expected?</dt>
-    <dd>
-        The following rules are used to match layers;
-        <dl>
-            <dt>Board Outline (required)</dt>
-            <dd>*.out *.oln *.gm1 *.gbr *.gml *.gko *.gm16</dd>
+  <dt>What is a GerbLook?</dt>
+  <dd>GerbLook is an online viewer which renders images so you can "<strong>look</strong>" at "<strong>gerber</strong>" files. Gerber files are used for manufacturing printed circuit boards (PCBs).</dd>
+  <dt>Do you store uploaded gerber files?</dt>
+  <dd>Not unless you ask us to. Well, we do store them on disk temporarily while generating the images. Then unless you choose to save them, they are deleted from disk as soon as rendering is completed (or fails), within the same web request.</dd>
+  <dt>How are the images created?</dt>
+  <dd>Using <a href="http://gerbv.gpleda.org/">Gerbv</a> to render the gerber files to png images and then using some <a href="http://www.imagemagick.org/">ImageMagick</a> magic to merge and apply color to the images.</dd>
+  <dt>Why are the images a little bit jaggy?</dt>
+  <dd>Antialiasing is not turned which is what makes the nice soft edges you see on some images. This leads to slightly more accurate though not quite as pretty images.</dd>
+  <dt>Is the source code available?</dt>
+  <dd>Yes, it's on GitHub here; <a href="https://github.com/hadleyrich/GerbLook">https://github.com/hadleyrich/GerbLook</a>.</dd>
+  <dt>What gerber file names are expected?</dt>
+  <dd>
+    The following rules are used to match layers;
+    <dl>
+      <dt>Board Outline (required)</dt>
+      <dd>*.out *.oln *.gm1 *.gbr *.gml *.gko *.gm16</dd>
 
-            <dt>Top Copper (required)</dt>
-            <dd>*.gtl</dd>
+      <dt>Top Copper (required)</dt>
+      <dd>*.gtl</dd>
 
-            <dt>Bottom Copper (required)</dt>
-            <dd>*.gbl</dd>
+      <dt>Bottom Copper (required)</dt>
+      <dd>*.gbl</dd>
 
-            <dt>Top Soldermask (required)</dt>
-            <dd>*.gts</dd>
+      <dt>Top Soldermask (required)</dt>
+      <dd>*.gts</dd>
 
-            <dt>Bottom Soldermask (required)</dt>
-            <dd>*.gbs</dd>
+      <dt>Bottom Soldermask (required)</dt>
+      <dd>*.gbs</dd>
 
-            <dt>Top Silkscreen</dt>
-            <dd>*.gto</dd>
+      <dt>Top Silkscreen</dt>
+      <dd>*.gto</dd>
 
-            <dt>Bottom Silkscreen</dt>
-            <dd>*.gbo</dd>
+      <dt>Bottom Silkscreen</dt>
+      <dd>*.gbo</dd>
 
-            <dt>Plated Drills</dt>
-            <dd>*.dri *.drl *.drd *.txt</dd>
+      <dt>Plated Drills</dt>
+      <dd>*.dri *.drl *.drd *.txt</dd>
 
-            <dt>Non-Plated Drills</dt>
-            <dd>As for plated drills but with NPTH in the filename</dd>
+      <dt>Non-Plated Drills</dt>
+      <dd>As for plated drills but with NPTH in the filename</dd>
 
-            <dt>Inner Copper 1</dt>
-            <dd>*.g1 *.gl1</dd>
+      <dt>Inner Copper 1</dt>
+      <dd>*.g1 *.gl1</dd>
 
-            <dt>Inner Copper 2</dt>
-            <dd>*.g2 *.gl2</dd>
+      <dt>Inner Copper 2</dt>
+      <dd>*.g2 *.gl2</dd>
 
-            <dt>Inner Copper 3</dt>
-            <dd>*.g3 *.gl3</dd>
+      <dt>Inner Copper 3</dt>
+      <dd>*.g3 *.gl3</dd>
 
-            <dt>Inner Copper 4</dt>
-            <dd>*.g4 *.gl4</dd>
+      <dt>Inner Copper 4</dt>
+      <dd>*.g4 *.gl4</dd>
 
-            <dt>Inner Copper 5</dt>
-            <dd>*.g5 *.gl5</dd>
+      <dt>Inner Copper 5</dt>
+      <dd>*.g5 *.gl5</dd>
 
-            <dt>Inner Copper 6</dt>
-            <dd>*.g6 *.gl6</dd>
+      <dt>Inner Copper 6</dt>
+      <dd>*.g6 *.gl6</dd>
 
-            <dt>Inner Copper 7</dt>
-            <dd>*.g7 *.gl7</dd>
-        </dl>
-        There are also various other rules to try and fuzzy match based on the contents of the filename but if you stick to the above you should be fine.
-    </dd>
+      <dt>Inner Copper 7</dt>
+      <dd>*.g7 *.gl7</dd>
+    </dl>
+    There are also various other rules to try and fuzzy match based on the contents of the filename but if you stick to the above you should be fine.
+  </dd>
 </dl>
 {% endblock %}
 
