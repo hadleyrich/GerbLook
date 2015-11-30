@@ -21,23 +21,23 @@
 <div class="container-fluid">
     
     <div class="panel panel-default">
+        <div class="panel-heading">Upload your Gerber Files</div>
         <div class="panel-body">
-        Basic panel example
+            <form id="gerber-form" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
+                {{ form.hidden_tag() }}
+                {{ form_field(form.gerbers, multiple=multiple) }}
+                {{ form_field(form.soldermask_color) }}
+                {{ form_field(form.silkscreen_color) }}
+                {{ form_field(form.copper_color) }}
+                <div class="form-group">
+                    <label class="col-sm-3"></label>
+                    <div class="col-sm-2">
+                        <input id="go" class="btn btn-primary" type="submit" value="Go!" />
+                    </div>
+                </div>
+            </form> 
         </div>
     </div>
-    <form id="gerber-form" method="POST" enctype="multipart/form-data" class="form-horizontal" role="form">
-        {{ form.hidden_tag() }}
-        {{ form_field(form.gerbers, multiple=multiple) }}
-        {{ form_field(form.soldermask_color) }}
-        {{ form_field(form.silkscreen_color) }}
-        {{ form_field(form.copper_color) }}
-        <div class="form-group">
-            <label class="col-sm-3"></label>
-            <div class="col-sm-2">
-                <input id="go" class="btn btn-primary" type="submit" value="Go!" />
-            </div>
-        </div>
-    </form>
     
     <p>GerbLook is an online <a href="https://en.wikipedia.org/wiki/Gerber_format">gerber file</a> viewer. Gerber files are used for manufacturing printed circuit boards (PCBs). GerbLook will render and display images of the various layers of your PCB which you can use to inspect what your fabricated board will look like.</p>
     <p>How do you use it? Upload a set of gerber files, can be either zipped, rarred or multiple separate gerber files. Select your soldermask, silkscreen and copper colors. Your gerber files are used to generate the images and then deleted.</p>
