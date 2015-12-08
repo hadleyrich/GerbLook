@@ -4,3 +4,4 @@ production.cfg
 logs/
 venv/
 data/
+env/

@@ -64,20 +64,20 @@ def guess_layer(path, gerberdir):
   if re.search(r'\.(out|oln|gm1|gbr|gml|gko|gm16|boardoutline\.ger)', filename):
     return 'outline'
 
-  if re.search(r'\.(gbl|sol|bottomlayer\.ger)', filename):
+  if re.search(r'\.(gbl|sol|bot|bottomlayer\.ger)', filename):
     return 'bottom_copper'
-  if re.search(r'\.(gbs|sts|bottomsoldermask\.ger)', filename):
+  if re.search(r'\.(gbs|sts|smb|bottomsoldermask\.ger)', filename):
     return 'bottom_soldermask'
-  if re.search(r'\.(gbo|bottomsilkscreen\.ger)', filename):
+  if re.search(r'\.(gbo|ssb|bottomsilkscreen\.ger)', filename):
     return 'bottom_silkscreen'
   if re.search(r'\.(gbp|bcream\.ger)', filename):
     return 'bottom_paste'
 
-  if re.search(r'\.(gtl|cmp|toplayer\.ger)', filename):
+  if re.search(r'\.(gtl|cmp|top|toplayer\.ger)', filename):
     return 'top_copper'
-  if re.search(r'\.(gts|stc|topsoldermask\.ger)', filename):
+  if re.search(r'\.(gts|stc|smt|topsoldermask\.ger)', filename):
     return 'top_soldermask'
-  if re.search(r'\.(gto|topsilkscreen\.ger)', filename):
+  if re.search(r'\.(gto|sst|topsilkscreen\.ger)', filename):
     return 'top_silkscreen'
   if re.search(r'\.(gtp|tcream\.ger)', filename):
     return 'top_paste'
@@ -288,4 +288,3 @@ def approx_gerber_size(filename, units=None):
   if units == "inch":
     return (w / 10000.0, h / 10000.0)
   return (w, h)
-

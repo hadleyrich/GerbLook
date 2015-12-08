@@ -23,22 +23,22 @@
       <dd>*.out *.oln *.gm1 *.gbr *.gml *.gko *.gm16</dd>
 
       <dt>Top Copper (required)</dt>
-      <dd>*.gtl</dd>
+      <dd>*.gtl (*.cmp, *.top, *toplayer*.ger)</dd>
 
       <dt>Bottom Copper (required)</dt>
-      <dd>*.gbl</dd>
+      <dd>*.gbl (*.sol, *.bot, *bottomlayer*.ger)</dd>
 
       <dt>Top Soldermask (required)</dt>
-      <dd>*.gts</dd>
+      <dd>*.gts (*.stc, *.smt, *topsoldermask*.ger)</dd>
 
       <dt>Bottom Soldermask (required)</dt>
-      <dd>*.gbs</dd>
+      <dd>*.gbs (*.sts, *.smb, *bottomsoldermask*.ger)</dd>
 
       <dt>Top Silkscreen</dt>
-      <dd>*.gto</dd>
+      <dd>*.gto (*.sst, *topsilkscreen*.ger)</dd>
 
       <dt>Bottom Silkscreen</dt>
-      <dd>*.gbo</dd>
+      <dd>*.gbo (*.ssb, *bottomsilkscreen*.ger)</dd>
 
       <dt>Plated Drills</dt>
       <dd>*.dri *.drl *.drd *.txt</dd>
@@ -67,8 +67,7 @@
       <dt>Inner Copper 7</dt>
       <dd>*.g7 *.gl7</dd>
     </dl>
-    There are also various other rules to try and fuzzy match based on the contents of the filename but if you stick to the above you should be fine.
+    The * stands for any string of characters. There are also various other rules to try and fuzzy match based on the contents of the filename but if you stick to the above you should be fine.
   </dd>
 </dl>
 {% endblock %}
-
