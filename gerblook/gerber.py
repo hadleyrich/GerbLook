@@ -61,6 +61,31 @@ def guess_layer(path, gerberdir):
     if 'npth' in filename:
       return 'nonplated_drills'
     return 'plated_drills'
+
+  # KiCad default naming
+  match = re.search(r'-([^.]+)\.([^.]+)\.gbr', filename)
+  if match:
+    l = None
+    if match.group(1) == 'b':
+      l = 'bottom_'
+    elif match.group(1) == 'f':
+      l = 'top_'
+    elif match.group(1).startswith('in'):
+      return 'inner_%s' % match.group(1)[2:]
+    else:
+      # Don't support this naming yet?
+      pass
+
+    if l:
+      if match.group(2) == 'cu':
+        return l+'copper'
+      elif match.group(2) == 'mask':
+        return l+'soldermask'
+      elif match.group(2) == 'silks':
+        return l+'silkscreen'
+      elif match.group(2) == 'paste':
+        return l+'paste'
+
   if re.search(r'\.(out|oln|gm1|gbr|gml|gko|gm16|boardoutline\.ger)', filename):
     return 'outline'
 
