@@ -5,33 +5,41 @@ import unittest
 
 from gerblook import gerber
 
+def logger(msg):
+  print msg
+
+
 class GuessLayerTest(unittest.TestCase):
   FILES_SIMPLE = [
     # Default names for KiCad 4.0.2, 2 layer design
-    ('design-B.Cu.gbr',      'bottom_copper'),
-    ('design-B.Mask.gbr',    'bottom_soldermask'),
-    ('design-B.Paste.gbr',   'bottom_paste'),
-    ('design-B.SilkS.gbr',   'bottom_silkscreen'),
-    ('design-Edge.Cuts.gbr', 'outline'),
-    ('design-F.Cu.gbr',      'top_copper'),
-    ('design-F.Mask.gbr',    'top_soldermask'),
-    ('design-F.Paste.gbr',   'top_paste'),
-    ('design-F.SilkS.gbr',   'top_silkscreen'),
-    ('design-In1.Cu.gbr',    'inner_1'),
-    ('design-In2.Cu.gbr',    'inner_2'),
+    {
+      'bottom_copper':     ['design-B.Cu.gbr'],
+      'bottom_paste':      ['design-B.Paste.gbr'],
+      'bottom_silkscreen': ['design-B.SilkS.gbr'],
+      'bottom_soldermask': ['design-B.Mask.gbr'],
+      'inner_1':           ['design-In1.Cu.gbr'],
+      'inner_2':           ['design-In2.Cu.gbr'],
+      'outline':           ['design-Edge.Cuts.gbr'],
+      'top_copper':        ['design-F.Cu.gbr'],
+      'top_paste':         ['design-F.Paste.gbr'],
+      'top_silkscreen':    ['design-F.SilkS.gbr'],
+      'top_soldermask':    ['design-F.Mask.gbr'],
+    },
 
     # "Protel File names"
-    ('design.gbl', 'bottom_copper'),
-    ('design.gbs', 'bottom_soldermask'),
-    ('design.gbp', 'bottom_paste'),
-    ('design.gbo', 'bottom_silkscreen'),
-    ('design.gm1', 'outline'),
-    ('design.gtl', 'top_copper'),
-    ('design.gts', 'top_soldermask'),
-    ('design.gtp', 'top_paste'),
-    ('design.gto', 'top_silkscreen'),
-    ('design.g2',  'inner_2'),
-    ('design.g3',  'inner_3'),
+    {
+      'bottom_copper':     ['design.gbl'],
+      'bottom_paste':      ['design.gbp'],
+      'bottom_silkscreen': ['design.gbo'],
+      'bottom_soldermask': ['design.gbs'],
+      'inner_2':           ['design.g2'],
+      'inner_3':           ['design.g3'],
+      'outline':           ['design.gm1'],
+      'top_copper':        ['design.gtl'],
+      'top_paste':         ['design.gtp'],
+      'top_silkscreen':    ['design.gto'],
+      'top_soldermask':    ['design.gts'],
+    },
 
     #('design-NPTH.drl', '-NPTH.drl'),
     #('design-NPTH-drl_map.plt', '-NPTH-drl_map.plt'),
@@ -39,10 +47,25 @@ class GuessLayerTest(unittest.TestCase):
     #('design-drl_map.plt', '-drl_map.plt'),
   ]
 
-  def testFilesSimple(self):
-    for fname, expected in GuessLayerTest.FILES_SIMPLE:
-      actual = gerber.guess_layer(fname, None)
-      self.assertEqual(expected, actual, "%s should return %s but got %s" % (fname, expected, actual))
+  def testSingleFilesSimple(self):
+    for testcase in self.FILES_SIMPLE:
+      for expected_type in testcase:
+        for fname in testcase[expected_type]:
+          actual_type = gerber.guess_layer(fname, None)
+          self.assertEqual(
+            actual_type, expected_type,
+            "%s should return %s but got %s" % (fname, expected_type, actual_type))
+
+  def testMultiFilesSimple(self):
+    for testcase in self.FILES_SIMPLE:
+      files = []
+      for expected_type in testcase:
+        for fname in testcase[expected_type]:
+          files.append(fname)
+
+      actual = gerber.guess_layers(files, None, logger)
+      self.assertItemsEqual(actual, testcase)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -6,11 +6,13 @@ from flask import current_app as app
 
 from gerblook.utils import *
 
-def guess_layers(filenames, gerberdir):
+def guess_layers(filenames, gerberdir, logger=None):
+  if not logger:
+    logger = app.logger.debug
   layers = {}
   for filename in filenames:
     layer_result = guess_layer(filename, gerberdir)
-    app.logger.debug('Guessed %s for %s' % (layer_result, filename))
+    logger('Guessed %s for %s' % (layer_result, filename))
     if layer_result:
       if layer_result in layers:
         layers[layer_result].append(filename)
