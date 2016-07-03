@@ -25,6 +25,19 @@ class GuessLayerTest(unittest.TestCase):
       'top_silkscreen':    ['design-F.SilkS.gbr'],
       'top_soldermask':    ['design-F.Mask.gbr'],
     },
+    {
+      'bottom_copper':     ['design-one-B.Cu.gbr'],
+      'bottom_paste':      ['design-one-B.Paste.gbr'],
+      'bottom_silkscreen': ['design-one-B.SilkS.gbr'],
+      'bottom_soldermask': ['design-one-B.Mask.gbr'],
+      'inner_1':           ['design-one-In1.Cu.gbr'],
+      'inner_2':           ['design-one-In2.Cu.gbr'],
+      'outline':           ['design-one-Edge.Cuts.gbr'],
+      'top_copper':        ['design-one-F.Cu.gbr'],
+      'top_paste':         ['design-one-F.Paste.gbr'],
+      'top_silkscreen':    ['design-one-F.SilkS.gbr'],
+      'top_soldermask':    ['design-one-F.Mask.gbr'],
+    },
 
     # "Protel File names"
     {
@@ -41,10 +54,10 @@ class GuessLayerTest(unittest.TestCase):
       'top_soldermask':    ['design.gts'],
     },
 
-    #('design-NPTH.drl', '-NPTH.drl'),
-    #('design-NPTH-drl_map.plt', '-NPTH-drl_map.plt'),
-    #('design.drl
-    #('design-drl_map.plt', '-drl_map.plt'),
+    #('design-one-NPTH.drl', '-NPTH.drl'),
+    #('design-one-NPTH-drl_map.plt', '-NPTH-drl_map.plt'),
+    #('design-one.drl
+    #('design-one-drl_map.plt', '-drl_map.plt'),
   ]
 
   def testSingleFilesSimple(self):
