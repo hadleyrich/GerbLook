@@ -11,6 +11,33 @@ def logger(msg):
 
 class GuessLayerTest(unittest.TestCase):
   FILES_SIMPLE = [
+    # Default names for older KiCad versions
+    {
+      'bottom_copper':     ['design-B_Cu.gbr'],
+      'bottom_paste':      ['design-B_Paste.gbr'],
+      'bottom_silkscreen': ['design-B_SilkS.gbr'],
+      'bottom_soldermask': ['design-B_Mask.gbr'],
+      'inner_1':           ['design-In1_Cu.gbr'],
+      'inner_2':           ['design-In2_Cu.gbr'],
+      'outline':           ['design-Edge_Cuts.gbr'],
+      'top_copper':        ['design-F_Cu.gbr'],
+      'top_paste':         ['design-F_Paste.gbr'],
+      'top_silkscreen':    ['design-F_SilkS.gbr'],
+      'top_soldermask':    ['design-F_Mask.gbr'],
+    },
+    {
+      'bottom_copper':     ['design-one-B_Cu.gbr'],
+      'bottom_paste':      ['design-one-B_Paste.gbr'],
+      'bottom_silkscreen': ['design-one-B_SilkS.gbr'],
+      'bottom_soldermask': ['design-one-B_Mask.gbr'],
+      'inner_1':           ['design-one-In1_Cu.gbr'],
+      'inner_2':           ['design-one-In2_Cu.gbr'],
+      'outline':           ['design-one-Edge_Cuts.gbr'],
+      'top_copper':        ['design-one-F_Cu.gbr'],
+      'top_paste':         ['design-one-F_Paste.gbr'],
+      'top_silkscreen':    ['design-one-F_SilkS.gbr'],
+      'top_soldermask':    ['design-one-F_Mask.gbr'],
+    },
     # Default names for KiCad 4.0.2, 2 layer design
     {
       'bottom_copper':     ['design-B.Cu.gbr'],

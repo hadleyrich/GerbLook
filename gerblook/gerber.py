@@ -65,7 +65,7 @@ def guess_layer(path, gerberdir):
     return 'plated_drills'
 
   # KiCad default naming
-  match = re.search(r'-([^-.]+)\.([^.]+)\.gbr', filename)
+  match = re.search(r'-([^-_.]+)[._]([^.]+)\.gbr', filename)
   if match:
     l = None
     if match.group(1) == 'b':
