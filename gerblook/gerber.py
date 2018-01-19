@@ -88,7 +88,7 @@ def guess_layer(path, gerberdir):
       elif match.group(2) == 'paste':
         return l+'paste'
 
-  if re.search(r'\.(out|oln|gm1|gbr|gml|gko|gm16|boardoutline\.ger)', filename):
+  if re.search(r'\.(out|oln|gm1|gbr|gml|gko|gm16|gm2|boardoutline\.ger)', filename):
     return 'outline'
 
   if re.search(r'\.(gbl|sol|bot|bottomlayer\.ger)', filename):
