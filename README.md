@@ -1,10 +1,6 @@
 GerbLook
 =======
-Copyright 2013 Hadley Rich, nice technology Ltd.  and contributors
-
-Website: <http://nice.net.nz>
-
-A web based gerber renderer based on Python, gerbv and imagemagick held together with a little glue and string.
+A web based gerber renderer using Python, Gerbv and Imagemagick
 
 Running your own instance
 -------------------------
@@ -30,4 +26,3 @@ The following setup is tested under Ubuntu Linux, if you are using another syste
 LICENSE
 -------
 BSD - See LICENSE file
-
