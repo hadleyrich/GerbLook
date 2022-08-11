@@ -203,12 +203,6 @@ def full_gerber_size(filename):
       x = None
       y = None
 
-      # This case catches lines with both x and y values
-      m = re.search(r'X(-?\d+)Y(-?\d+)', line, flags=re.IGNORECASE)
-      if m:
-        x = m.group(1)
-        y = m.group(2)
-
       # This case catches lines with only x coords (y is unchanged)
       m = re.search(r'X(-?\d+)', line, flags=re.IGNORECASE)
       if m:
@@ -245,7 +239,7 @@ def full_gerber_size(filename):
           y = y[1:len(y)]
           multiplier = -1
         if board['number_format'] == 'Leading zeros omitted':
-          y = y.zfill(x_digs_total)
+          y = y.zfill(y_digs_total)
         elif board['number_format'] == 'Trailing zeros omitted':
           y = y + '0' * (y_digs_total - len(y))
         val = int(y[0:y_digs_before_decimal])
