@@ -203,12 +203,6 @@ def full_gerber_size(filename):
       x = None
       y = None
 
-      # This case catches lines with both x and y values
-      m = re.search(r'X(-?\d+)Y(-?\d+)', line, flags=re.IGNORECASE)
-      if m:
-        x = m.group(1)
-        y = m.group(2)
-
       # This case catches lines with only x coords (y is unchanged)
       m = re.search(r'X(-?\d+)', line, flags=re.IGNORECASE)
       if m:
