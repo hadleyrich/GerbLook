@@ -245,7 +245,7 @@ def full_gerber_size(filename):
           y = y[1:len(y)]
           multiplier = -1
         if board['number_format'] == 'Leading zeros omitted':
-          y = y.zfill(x_digs_total)
+          y = y.zfill(y_digs_total)
         elif board['number_format'] == 'Trailing zeros omitted':
           y = y + '0' * (y_digs_total - len(y))
         val = int(y[0:y_digs_before_decimal])
